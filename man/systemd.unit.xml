@@ -1557,7 +1557,7 @@
                 </row>
                 <row>
                   <entry>audit</entry>
-                  <entry>Linux Audit Framework</entry>
+                  <entry>Linux kernel Audit Framework</entry>
                 </row>
                 <row>
                   <entry>uefi-secureboot</entry>

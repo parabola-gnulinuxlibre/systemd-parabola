@@ -140,7 +140,7 @@
     the <parameter>path</parameter> parameter is
     <constant>NULL</constant>. For normal file system
     <constant>AF_UNIX</constant> sockets, set the
-    <parameter>length</parameter> parameter to 0. For Linux abstract
+    <parameter>length</parameter> parameter to 0. For Linux kernel abstract
     namespace sockets, set the <parameter>length</parameter> to the
     size of the address, including the initial 0 byte, and set the
     <parameter>path</parameter> to the initial 0 byte of the socket

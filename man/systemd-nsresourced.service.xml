@@ -53,7 +53,7 @@
     symmetrically.</para>
 
     <para>The service provides API calls to allowlist mounts (referenced via their mount file descriptors as
-    per Linux <function>fsmount()</function> API), to pass ownership of a cgroup subtree to the user
+    per Linux kernel <function>fsmount()</function> API), to pass ownership of a cgroup subtree to the user
     namespace and to delegate a virtual Ethernet device pair to the user namespace. When used in combination
     this is sufficient to implement fully unprivileged container environments, as implemented by
     <citerefentry><refentrytitle>systemd-nspawn</refentrytitle><manvolnum>1</manvolnum></citerefentry>, fully
