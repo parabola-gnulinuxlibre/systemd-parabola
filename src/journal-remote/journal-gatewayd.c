@@ -788,7 +788,7 @@ static int request_handler_machine(
                      SD_ID128_FORMAT_VAL(mid),
                      SD_ID128_FORMAT_VAL(bid),
                      hostname_cleanup(hostname),
-                     os_name ? os_name : "Linux",
+                     os_name ? os_name : "GNU/Linux",
                      v ? v : "bare",
                      usage,
                      cutoff_from,
