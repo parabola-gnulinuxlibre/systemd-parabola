@@ -458,7 +458,7 @@
           <term><option>--sign-kernel</option></term>
           <term><option>--no-sign-kernel</option></term>
 
-          <listitem><para>Override the detection of whether to sign the Linux binary itself before it is
+          <listitem><para>Override the detection of whether to sign the Linux kernel binary itself before it is
           embedded in the combined image. If not specified, it will be signed if a SecureBoot signing key is
           provided via the
           <varname>SecureBootPrivateKey=</varname>/<option>--secureboot-private-key=</option> option and the
@@ -582,7 +582,7 @@
       <constant>enter-initrd</constant> phase) with the key
       <filename index='false'>pcr-private-initrd-key.pem</filename>, and for the main system (phases
       <constant>leave-initrd</constant>, <constant>sysinit</constant>, <constant>ready</constant>) with the
-      key <filename index='false'>pcr-private-system-key.pem</filename>. The Linux binary and the resulting
+      key <filename index='false'>pcr-private-system-key.pem</filename>. The Linux kernel binary and the resulting
       combined image will be signed with the SecureBoot key <filename index='false'>sb.key</filename>.</para>
     </example>
 

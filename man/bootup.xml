@@ -23,7 +23,7 @@
   <refsect1>
     <title>Description</title>
 
-    <para>A number of different components are involved in the boot of a Linux system. Immediately after
+    <para>A number of different components are involved in the boot of a GNU/Linux system. Immediately after
     power-up, the system firmware will do minimal hardware initialization, and hand control over to a boot
     loader (e.g.
     <citerefentry><refentrytitle>systemd-boot</refentrytitle><manvolnum>7</manvolnum></citerefentry> or

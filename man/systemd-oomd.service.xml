@@ -68,7 +68,7 @@
     is set to <constant>true</constant> in
     <citerefentry><refentrytitle>systemd-system.conf</refentrytitle><manvolnum>5</manvolnum></citerefentry>.</para>
 
-    <para>The kernel must be compiled with PSI support. This is available in Linux 4.20 and above.</para>
+    <para>The kernel must be compiled with PSI support. This is available in Linux kernel 4.20 and above.</para>
 
     <para>It is highly recommended for the system to have swap enabled for <command>systemd-oomd</command> to
     function optimally. With swap enabled, the system spends enough time swapping pages to let

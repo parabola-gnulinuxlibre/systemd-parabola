@@ -47,7 +47,7 @@
         <listitem><para>Close all open file descriptors except
         standard input, output, and error (i.e. the first three file
         descriptors 0, 1, 2). This ensures that no accidentally passed
-        file descriptor stays around in the daemon process. On Linux,
+        file descriptor stays around in the daemon process. On GNU/Linux,
         this is best implemented by iterating through
         <filename>/proc/self/fd</filename>, with a fallback of
         iterating from file descriptor 3 to the value returned by
@@ -142,7 +142,7 @@
     <refsect2>
       <title>New-Style Daemons</title>
 
-      <para>Modern services for Linux should be implemented as
+      <para>Modern services for GNU/Linux should be implemented as
       new-style daemons. This makes it easier to supervise and control
       them at runtime and simplifies their implementation.</para>
 
@@ -285,7 +285,7 @@
       via SysV init scripts, as detailed in the <ulink
       url="http://refspecs.linuxbase.org/LSB_3.1.1/LSB-Core-generic/LSB-Core-generic/iniscrptact.html">LSB
       Linux Standard Base Core Specification</ulink>. This method of activation is supported ubiquitously on
-      Linux init systems, both old-style and new-style systems. Among other issues, SysV init scripts have
+      GNU/Linux init systems, both old-style and new-style systems. Among other issues, SysV init scripts have
       the disadvantage of involving shell scripts in the boot process. New-style init systems generally use
       updated versions of activation, both during boot-up and during runtime and using more minimal service
       description files.</para>
@@ -428,7 +428,7 @@
       often simpler or better alternatives, or they can be put together of combinations of the schemes above.
       Example: Sometimes, it appears useful to start daemons or <filename>.socket</filename> units when a
       specific IP address is configured on a network interface, because network sockets shall be bound to the
-      address. However, an alternative to implement this is by utilizing the Linux
+      address. However, an alternative to implement this is by utilizing the Linux kernel
       <constant>IP_FREEBIND</constant>/<constant>IPV6_FREEBIND</constant> socket option, as accessible via
       <varname>FreeBind=yes</varname> in systemd socket files (see
       <citerefentry><refentrytitle>systemd.socket</refentrytitle><manvolnum>5</manvolnum></citerefentry> for
@@ -436,7 +436,7 @@
       address, and hence allows bindings to a particular IP address before it actually becomes available,
       making such an explicit dependency to the configured address redundant. Another often suggested trigger
       for service activation is low system load. However, here too, a more convincing approach might be to
-      make proper use of features of the operating system, in particular, the CPU or I/O scheduler of Linux.
+      make proper use of features of the operating system, in particular, the CPU or I/O scheduler of the Linux kernel.
       Instead of scheduling jobs from userspace based on monitoring the OS scheduler, it is advisable to
       leave the scheduling of processes to the OS scheduler itself. systemd provides fine-grained access to
       the CPU and I/O schedulers. If a process executed by the service manager shall not negatively impact

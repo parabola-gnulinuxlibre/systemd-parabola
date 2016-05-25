@@ -44,7 +44,7 @@
     attached to a Linux kernel binary image, and is a piece of code that runs in the UEFI firmware
     environment before transitioning into the Linux kernel environment. The UEFI boot stub ensures a Linux
     kernel is executable as regular UEFI binary, and is able to do various preparations before switching the
-    system into the Linux world.</para>
+    system into the Linux kernel's world.</para>
 
     <para>The UEFI boot stub looks for various resources for the kernel invocation inside the UEFI PE binary
     itself. This allows combining various resources inside a single PE binary image (usually called "Unified

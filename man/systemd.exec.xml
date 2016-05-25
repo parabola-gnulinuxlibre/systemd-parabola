@@ -42,7 +42,7 @@
     information on the specific unit configuration files. The execution specific configuration options are configured
     in the [Service], [Socket], [Mount], or [Swap] sections, depending on the unit type.</para>
 
-    <para>In addition, options which control resources through Linux Control Groups (cgroups) are listed in
+    <para>In addition, options which control resources through Linux kernel Control Groups (cgroups) are listed in
     <citerefentry><refentrytitle>systemd.resource-control</refentrytitle><manvolnum>5</manvolnum></citerefentry>.
     Those options complement options listed here.</para>
   </refsect1>
@@ -165,7 +165,7 @@
         to <varname>RootDirectory=</varname> however mounts a file system hierarchy from a block device node
         or loopback file instead of a directory. The device node or file system image file needs to contain a
         file system without a partition table, or a file system within an MBR/MS-DOS or GPT partition table
-        with only a single Linux-compatible partition, or a set of file systems within a GPT partition table
+        with only a single Linux-kernel-compatible partition, or a set of file systems within a GPT partition table
         that follows the
         <ulink url="https://uapi-group.org/specifications/specs/discoverable_partitions_specification">
           Discoverable Partitions Specification</ulink>.</para>
@@ -403,7 +403,7 @@
         unit's processes. This controls the <literal>subset=</literal> mount option of the
         <literal>procfs</literal> instance for the unit. For further details see <ulink
         url="https://docs.kernel.org/filesystems/proc.html#mount-options">The /proc
-        Filesystem</ulink>. Note that Linux exposes various kernel APIs via <filename>/proc/</filename>,
+        Filesystem</ulink>. Note that GNU/Linux exposes various kernel APIs via <filename>/proc/</filename>,
         which are made unavailable with this setting. Since these APIs are used frequently this option is
         useful only in a few, specific cases, and is not suitable for most non-trivial programs.</para>
 
@@ -615,7 +615,7 @@
         <literal>-</literal>, except for the first character which must be one of a-z, A-Z and
         <literal>_</literal> (i.e. digits and <literal>-</literal> are not permitted as first character). The
         user/group name must have at least one character, and at most 31. These restrictions are made in
-        order to avoid ambiguities and to ensure user/group names and unit files remain portable among Linux
+        order to avoid ambiguities and to ensure user/group names and unit files remain portable among GNU/Linux
         systems. For further details on the names accepted and the names warned about see <ulink
         url="https://systemd.io/USER_NAMES">User/Group Name Syntax</ulink>.</para>
 
@@ -951,13 +951,13 @@ CapabilityBoundingSet=~CAP_B CAP_C</programlisting>
         enforcement. For example, time limits specified for <varname>LimitCPU=</varname> will be rounded up
         implicitly to multiples of 1s. For <varname>LimitNICE=</varname> the value may be specified in two
         syntaxes: if prefixed with <literal>+</literal> or <literal>-</literal>, the value is understood as
-        regular Linux nice value in the range -20…19. If not prefixed like this the value is understood as
+        regular Linux kernel nice value in the range -20…19. If not prefixed like this the value is understood as
         raw resource limit parameter in the range 0…40 (with 0 being equivalent to 1).</para>
 
         <para>Note that most process resource limits configured with these options are per-process, and
         processes may fork in order to acquire a new set of resources that are accounted independently of the
         original process, and may thus escape limits set. Also note that <varname>LimitRSS=</varname> is not
-        implemented on Linux, and setting it has no effect. Often it is advisable to prefer the resource
+        implemented on the Linux kernel, and setting it has no effect. Often it is advisable to prefer the resource
         controls listed in
         <citerefentry><refentrytitle>systemd.resource-control</refentrytitle><manvolnum>5</manvolnum></citerefentry>
         over these per-process limits, as they apply to services as a whole, may be altered dynamically at
@@ -1041,13 +1041,13 @@ CapabilityBoundingSet=~CAP_B CAP_C</programlisting>
                 <entry>LimitRSS=</entry>
                 <entry>ulimit -m</entry>
                 <entry>Bytes</entry>
-                <entry>Don't use. No effect on Linux.</entry>
+                <entry>Don't use. No effect on the Linux kernel.</entry>
               </row>
               <row>
                 <entry>LimitNOFILE=</entry>
                 <entry>ulimit -n</entry>
                 <entry>Number of File Descriptors</entry>
-                <entry>Don't use. Be careful when raising the soft limit above 1024, since <citerefentry project='man-pages'><refentrytitle>select</refentrytitle><manvolnum>2</manvolnum></citerefentry> cannot function with file descriptors above 1023 on Linux. Nowadays, the hard limit defaults to 524288, a very high value compared to historical defaults. Typically applications should increase their soft limit to the hard limit on their own, if they are OK with working with file descriptors above 1023, i.e. do not use <citerefentry project='man-pages'><refentrytitle>select</refentrytitle><manvolnum>2</manvolnum></citerefentry>. Note that file descriptors are nowadays accounted like any other form of memory, thus there should not be any need to lower the hard limit. Use <varname>MemoryMax=</varname> to control overall service memory use, including file descriptor memory.</entry>
+                <entry>Don't use. Be careful when raising the soft limit above 1024, since <citerefentry project='man-pages'><refentrytitle>select</refentrytitle><manvolnum>2</manvolnum></citerefentry> cannot function with file descriptors above 1023 on GNU/Linux. Nowadays, the hard limit defaults to 524288, a very high value compared to historical defaults. Typically applications should increase their soft limit to the hard limit on their own, if they are OK with working with file descriptors above 1023, i.e. do not use <citerefentry project='man-pages'><refentrytitle>select</refentrytitle><manvolnum>2</manvolnum></citerefentry>. Note that file descriptors are nowadays accounted like any other form of memory, thus there should not be any need to lower the hard limit. Use <varname>MemoryMax=</varname> to control overall service memory use, including file descriptor memory.</entry>
               </row>
               <row>
                 <entry>LimitAS=</entry>
@@ -1303,7 +1303,7 @@ CapabilityBoundingSet=~CAP_B CAP_C</programlisting>
         <option>local</option>. A list of NUMA nodes that should be associated with the policy must be specified
         in <varname>NUMAMask=</varname>. For more details on each policy please see,
         <citerefentry><refentrytitle>set_mempolicy</refentrytitle><manvolnum>2</manvolnum></citerefentry>. For overall
-        overview of NUMA support in Linux see,
+        overview of NUMA support in GNU/Linux see
         <citerefentry project='man-pages'><refentrytitle>numa</refentrytitle><manvolnum>7</manvolnum></citerefentry>.
         </para>
 
@@ -1632,7 +1632,7 @@ StateDirectory=aaa/bbb ccc</programlisting>
         order to provide writable subdirectories within read-only directories. Use
         <varname>ReadWritePaths=</varname> in order to allow-list specific paths for write access if
         <varname>ProtectSystem=strict</varname> is used. Note that <varname>ReadWritePaths=</varname> cannot
-        be used to gain write access to a file system whose superblock is mounted read-only. On Linux, for
+        be used to gain write access to a file system whose superblock is mounted read-only. On GNU/Linux, for
         each mount point write access is granted only if the mount point itself <emphasis>and</emphasis> the
         file system superblock backing it are not marked read-only. <varname>ReadWritePaths=</varname> only
         controls the former, not the latter, hence a read-only file system superblock remains
@@ -1825,7 +1825,7 @@ BindReadOnlyPaths=/var/lib/systemd</programlisting>
       <varlistentry>
         <term><varname>NetworkNamespacePath=</varname></term>
 
-        <listitem><para>Takes an absolute file system path referring to a Linux network namespace
+        <listitem><para>Takes an absolute file system path referring to a Linux kernel network namespace
         pseudo-file (i.e. a file like <filename>/proc/$PID/ns/net</filename> or a bind mount or symlink to
         one). When set the invoked processes are added to the network namespace referenced by that path. The
         path has to point to a valid namespace file at the moment the processes are forked off. If this
@@ -1859,7 +1859,7 @@ BindReadOnlyPaths=/var/lib/systemd</programlisting>
 
         <para>Note that IPC namespacing does not have an effect on
         <constant>AF_UNIX</constant> sockets, which are the most common
-        form of IPC used on Linux. Instead, <constant>AF_UNIX</constant>
+        form of IPC used on GNU/Linux. Instead, <constant>AF_UNIX</constant>
         sockets in the file system are subject to mount namespacing, and
         those in the abstract namespace are subject to network namespacing.
         IPC namespacing only has an effect on SysV IPC (which is mostly
@@ -1883,7 +1883,7 @@ BindReadOnlyPaths=/var/lib/systemd</programlisting>
       <varlistentry>
         <term><varname>IPCNamespacePath=</varname></term>
 
-        <listitem><para>Takes an absolute file system path referring to a Linux IPC namespace
+        <listitem><para>Takes an absolute file system path referring to a Linux kernel IPC namespace
         pseudo-file (i.e. a file like <filename>/proc/$PID/ns/ipc</filename> or a bind mount or symlink to
         one). When set the invoked processes are added to the network namespace referenced by that path. The
         path has to point to a valid namespace file at the moment the processes are forked off. If this
@@ -2058,7 +2058,7 @@ BindReadOnlyPaths=/var/lib/systemd</programlisting>
       <varlistentry>
         <term><varname>ProtectControlGroups=</varname></term>
 
-        <listitem><para>Takes a boolean argument. If true, the Linux Control Groups (<citerefentry
+        <listitem><para>Takes a boolean argument. If true, the Linux kernel Control Groups (<citerefentry
         project='man-pages'><refentrytitle>cgroups</refentrytitle><manvolnum>7</manvolnum></citerefentry>) hierarchies
         accessible through <filename>/sys/fs/cgroup/</filename> will be made read-only to all processes of the
         unit. Except for container managers no services should require write access to the control groups hierarchies;
@@ -2205,8 +2205,8 @@ RestrictFileSystems=ext4</programlisting>
       <varlistentry>
         <term><varname>RestrictNamespaces=</varname></term>
 
-        <listitem><para>Restricts access to Linux namespace functionality for the processes of this unit. For details
-        about Linux namespaces, see <citerefentry
+        <listitem><para>Restricts access to Linux kernel namespace functionality for the processes of this unit. For details
+        about Linux kernel namespaces, see <citerefentry
         project='man-pages'><refentrytitle>namespaces</refentrytitle><manvolnum>7</manvolnum></citerefentry>. Either
         takes a boolean argument, or a space-separated list of namespace type identifiers. If false (the default), no
         restrictions on namespace creation and switching are made. If true, access to any kind of namespacing is
@@ -3194,7 +3194,7 @@ StandardInputData=V2XigLJyZSBubyBzdHJhbmdlcnMgdG8gbG92ZQpZb3Uga25vdyB0aGUgcnVsZX
         <citerefentry><refentrytitle>systemd-journald.service</refentrytitle><manvolnum>8</manvolnum></citerefentry>
         for details about journal namespaces.</para>
 
-        <para>Internally, journal namespaces are implemented through Linux mount namespacing and
+        <para>Internally, journal namespaces are implemented through Linux kernel mount namespacing and
         over-mounting the directory that contains the relevant <constant>AF_UNIX</constant> sockets used for
         logging in the unit's mount namespace. Since mount namespaces are used this setting disconnects
         propagation of mounts from the unit's processes to the host, similarly to how
@@ -4446,7 +4446,7 @@ StandardInputData=V2XigLJyZSBubyBzdHJhbmdlcnMgdG8gbG92ZQpZb3Uga25vdyB0aGUgcnVsZX
       </tgroup>
     </table>
 
-    <para>Finally, the BSD operating systems define a set of exit codes, typically defined on Linux systems too:</para>
+    <para>Finally, the BSD operating systems define a set of exit codes, typically defined on GNU/Linux systems too:</para>
 
     <table>
       <title>BSD exit codes</title>

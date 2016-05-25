@@ -474,7 +474,7 @@
     <para>These functions send a single datagram with the state string as payload to the socket referenced in
     the <varname>$NOTIFY_SOCKET</varname> environment variable. If the first character of
     <varname>$NOTIFY_SOCKET</varname> is <literal>/</literal> or <literal>@</literal>, the string is
-    understood as an <constant>AF_UNIX</constant> or Linux abstract namespace socket (respectively), and in
+    understood as an <constant>AF_UNIX</constant> or Linux kernel abstract namespace socket (respectively), and in
     both cases the datagram is accompanied by the process credentials of the sending service, using
     SCM_CREDENTIALS. If the string starts with <literal>vsock:</literal> then the string is understood as an
     <constant>AF_VSOCK</constant> address, which is useful for hypervisors/VMMs or other processes on the

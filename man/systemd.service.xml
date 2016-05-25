@@ -1217,7 +1217,7 @@
         <listitem><para>Configure the out-of-memory (OOM) killing policy for the kernel and the userspace OOM
         killer
         <citerefentry><refentrytitle>systemd-oomd.service</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
-        On Linux, when memory becomes scarce to the point that the kernel has trouble allocating memory for
+        On the Linux kernel, when memory becomes scarce to the point that the kernel has trouble allocating memory for
         itself, it might decide to kill a running process in order to free up memory and reduce memory
         pressure. Note that <filename>systemd-oomd.service</filename> is a more flexible solution that aims
         to prevent out-of-memory situations for the userspace too, not just the kernel, by attempting to
@@ -1239,7 +1239,7 @@
         <constant>continue</constant>.</para>
 
         <para>Use the <varname>OOMScoreAdjust=</varname> setting to configure whether processes of the unit
-        shall be considered preferred or less preferred candidates for process termination by the Linux OOM
+        shall be considered preferred or less preferred candidates for process termination by the Linux kernel OOM
         killer logic. See
         <citerefentry><refentrytitle>systemd.exec</refentrytitle><manvolnum>5</manvolnum></citerefentry> for
         details.</para>

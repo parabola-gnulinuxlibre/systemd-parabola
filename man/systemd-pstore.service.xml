@@ -30,11 +30,11 @@
   <refsect1>
     <title>Description</title>
     <para><filename>systemd-pstore.service</filename> is a system service that archives the
-    contents of the Linux persistent storage filesystem, pstore, to other storage,
+    contents of the Linux kernel persistent storage filesystem, pstore, to other storage,
     thus preserving the existing information contained in the pstore, and clearing
     pstore storage for future error events.</para>
 
-    <para>Linux provides a persistent storage file system, pstore, that can store error records when the
+    <para>The Linux kernel provides a persistent storage file system, pstore, that can store error records when the
     kernel dies (or reboots or powers-off). These records in turn can be referenced to debug kernel problems
     (currently the kernel stores the tail of the kernel log, which also contains a stack backtrace, into
     pstore).</para>

@@ -515,7 +515,7 @@
         <term><varname>EgressQOSMaps=</varname></term>
         <term><varname>IngressQOSMaps=</varname></term>
         <listitem>
-          <para>Defines a mapping of Linux internal packet priority (<constant>SO_PRIORITY</constant>)
+          <para>Defines a mapping of Linux kernel internal packet priority (<constant>SO_PRIORITY</constant>)
           to VLAN header PCP field for outgoing and incoming frames, respectively. Takes a
           whitespace-separated list of integer pairs, where each integer must be in the range
           1…4294967294, in the format <literal>from</literal>-<literal>to</literal>, e.g.,

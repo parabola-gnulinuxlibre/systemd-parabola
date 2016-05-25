@@ -189,7 +189,7 @@
         <term><varname>Capability=</varname></term>
         <term><varname>DropCapability=</varname></term>
 
-        <listitem><para>Takes a space-separated list of Linux process
+        <listitem><para>Takes a space-separated list of Linux kernel process
         capabilities (see
         <citerefentry project='man-pages'><refentrytitle>capabilities</refentrytitle><manvolnum>7</manvolnum></citerefentry>
         for details). The <varname>Capability=</varname> setting
@@ -216,7 +216,7 @@
 
       <varlistentry>
         <term><varname>AmbientCapability=</varname></term>
-        <listitem><para>Takes a space-separated list of Linux process
+        <listitem><para>Takes a space-separated list of Linux kernel process
         capabilities (see
         <citerefentry project='man-pages'><refentrytitle>capabilities</refentrytitle><manvolnum>7</manvolnum></citerefentry>
         for details). The <varname>AmbientCapability=</varname> setting

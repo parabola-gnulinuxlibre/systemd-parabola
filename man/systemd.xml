@@ -37,7 +37,7 @@
   <refsect1>
     <title>Description</title>
 
-    <para>systemd is a system and service manager for Linux operating systems. When run as first process on
+    <para>systemd is a system and service manager for GNU/Linux operating systems. When run as first process on
     boot (as PID 1), it acts as init system that brings up and maintains userspace services. Separate
     instances are started for logged-in users to start their services.</para>
 
@@ -212,7 +212,7 @@
     memory its accounting data is flushed out too. However, this data is generally not lost, as a journal log record
     is generated declaring the consumed resources whenever a unit shuts down.</para>
 
-    <para>Processes systemd spawns are placed in individual Linux control groups named after the unit which
+    <para>Processes systemd spawns are placed in individual Linux kernel control groups named after the unit which
     they belong to in the private systemd hierarchy. (see <ulink
     url="https://docs.kernel.org/admin-guide/cgroup-v2.html">Control Groups v2</ulink> for more information
     about control groups, or short "cgroups").  systemd uses this to effectively keep track of
@@ -785,7 +785,7 @@
 
     <para>When run as the system instance, systemd parses a number of options listed below. They can be
     specified as kernel command line arguments which are parsed from a number of sources depending on the
-    environment in which systemd is executed. If run inside a Linux container, these options are parsed from
+    environment in which systemd is executed. If run inside a container, these options are parsed from
     the command line arguments passed to systemd itself, next to any of the command line options listed in
     the Options section above. If run outside of Linux containers, these arguments are parsed from
     <filename>/proc/cmdline</filename> and from the <literal>SystemdOptions</literal> EFI variable
