@@ -33,7 +33,7 @@
     <title>Description</title>
 
     <para><command>systemd-cgtop</command> shows the top control
-    groups of the local Linux control group hierarchy, ordered by
+    groups of the local Linux kernel control group hierarchy, ordered by
     their CPU, memory, or disk I/O load. The display is refreshed in
     regular intervals (by default every 1s), similar in style to
     <citerefentry project='man-pages'><refentrytitle>top</refentrytitle><manvolnum>1</manvolnum></citerefentry>.

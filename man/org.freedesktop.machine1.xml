@@ -318,7 +318,7 @@ node /org/freedesktop/machine1 {
       service that registers the machine, a class string, the PID of the leader process of the machine, an
       optional root directory of the container, and an array of additional properties to use for the scope
       registration. The virtual machine name must be suitable as a hostname, and hence should follow the usual
-      DNS hostname rules, as well as the Linux hostname restrictions. Specifically, only 7 bit ASCII is
+      DNS hostname rules, as well as the Linux kernel hostname restrictions. Specifically, only 7 bit ASCII is
       permitted, a maximum length of 64 characters is enforced, only characters from the set
       <literal>a-zA-Z0-9-_.</literal> are allowed, the name may not begin with a dot, and it may not contain
       two dots immediately following each other. Container and VM managers should ideally use the hostname
@@ -668,14 +668,14 @@ node /org/freedesktop/machine1/machine/rawhide {
       top-level process of the payload of the machine, i.e. for containers PID 1 inside the container, and
       for VMs the process encapsulating the VM. Its lifetime defines the lifetime of the machine.)</para>
 
-      <para><varname>LeaderPIDFDId</varname> encodes the Linux pidfd inode ID of the leader process of the
+      <para><varname>LeaderPIDFDId</varname> encodes the Linux kernel pidfd inode ID of the leader process of the
       machine.</para>
 
       <para><varname>Supervisor</varname> is the PID of the supervisor process of the machine. (The
       supervisor process is the process that manages the machine, if there's a separate one for it. A
       supervisor process is not always defined, and does not define the machine's lifetime.)</para>
 
-      <para><varname>SupervisorPIDFDId</varname> encodes the Linux pidfd inode ID of the supervisor process of the
+      <para><varname>SupervisorPIDFDId</varname> encodes the Linux kernel pidfd inode ID of the supervisor process of the
       machine.</para>
 
       <para><varname>Class</varname> is the class of the machine and is either the string "vm" (for real VMs

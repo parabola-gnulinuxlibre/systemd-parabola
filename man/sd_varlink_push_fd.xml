@@ -63,7 +63,7 @@
     <function>sd_varlink_set_allow_fd_passing_output()</function> that enables it, otherwise these calls will
     fail with <constant>-EPERM</constant>.</para>
 
-    <para>Note that on Linux a maximum of 253 file descriptors may be enqueued on
+    <para>Note that on the Linux kernel a maximum of 253 file descriptors may be enqueued on
     <constant>AF_UNIX</constant> sockets at once. Attempting to enqueue more on a single Varlink message will
     fail with <constant>-ENOBUFS</constant>.</para>
   </refsect1>

@@ -1547,7 +1547,7 @@ node /org/freedesktop/login1/session/1 {
 
       <para><varname>Leader</varname> encodes the PID of the process that registered the session.</para>
 
-      <para><varname>LeaderPIDFDId</varname> encodes the Linux pidfd inode ID of the process that registered
+      <para><varname>LeaderPIDFDId</varname> encodes the Linux kernel pidfd inode ID of the process that registered
       the session.</para>
 
       <para><varname>Audit</varname> encodes the Kernel Audit session ID of the session if auditing is

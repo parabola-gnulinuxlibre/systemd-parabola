@@ -62,7 +62,7 @@
       step is skipped if <option>--root=</option> is specified or running in a chroot environment.
       </para></listitem>
 
-      <listitem><para>Similarly, if run inside a Linux container environment and a UUID is configured for the
+      <listitem><para>Similarly, if run inside a container environment and a UUID is configured for the
       container, this is used to initialize the machine ID. For details, see the documentation of the <ulink
       url="https://systemd.io/CONTAINER_INTERFACE">Container Interface</ulink>. This step is skipped if
       <option>--root=</option> is specified or running in a chroot environment.</para></listitem>
