@@ -379,5 +379,5 @@ const char *os_release_pretty_name(const char *pretty_name, const char *name) {
          * exists mostly to ensure we use the same logic wherever possible. */
 
         return empty_to_null(pretty_name) ?:
-                empty_to_null(name) ?: "Linux";
+                empty_to_null(name) ?: "GNU/Linux";
 }
