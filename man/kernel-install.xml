@@ -135,7 +135,7 @@
             <filename>$BOOT/loader/entries/<replaceable>ENTRY-TOKEN</replaceable>-<replaceable>KERNEL-VERSION</replaceable>.conf</filename>.
             The title of the entry is the <replaceable>PRETTY_NAME</replaceable> parameter specified in
             <filename>/etc/os-release</filename> or <filename>/usr/lib/os-release</filename> (if the former
-            is missing), or "Linux <replaceable>KERNEL-VERSION</replaceable>", if unset.</para>
+            is missing), or "GNU/Linux <replaceable>KERNEL-VERSION</replaceable>", if unset.</para>
 
             <para>If <varname>$KERNEL_INSTALL_LAYOUT</varname> is not "bls", this plugin does nothing.</para></listitem>
 
