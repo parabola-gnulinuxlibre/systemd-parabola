@@ -183,7 +183,7 @@
 
           <listitem><para>A pretty operating system name in a format suitable for presentation to the
           user. May or may not contain a release code name or OS version of some kind, as suitable. If not
-          set, a default of <literal>PRETTY_NAME="Linux"</literal> may be used</para>
+          set, a default of <literal>PRETTY_NAME="GNU/Linux"</literal> may be used</para>
 
           <para>Example: <literal>PRETTY_NAME="Fedora 17 (Beefy Miracle)"</literal>.</para></listitem>
         </varlistentry>
