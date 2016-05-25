@@ -79,7 +79,7 @@
       <listitem><para>Otherwise, a fallback hostname configured at compilation time will be used
       (<literal>&FALLBACK_HOSTNAME;</literal>).</para></listitem>
 
-      <!-- what about the "linux" fallback fallback? -->
+      <!-- what about the "gnu-linux" fallback? -->
     </itemizedlist>
 
     <para>Effectively, the static hostname has higher priority than a transient hostname, which has higher
