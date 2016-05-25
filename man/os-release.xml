@@ -98,7 +98,7 @@
         <listitem><para>A string identifying the operating system,
         without a version component, and suitable for presentation to
         the user. If not set, defaults to
-        <literal>NAME=Linux</literal>. Example:
+        <literal>NAME=GNU/Linux</literal>. Example:
         <literal>NAME=Fedora</literal> or <literal>NAME="Debian
         GNU/Linux"</literal>.</para></listitem>
       </varlistentry>
