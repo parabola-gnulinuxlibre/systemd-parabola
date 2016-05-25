@@ -370,7 +370,7 @@ static int determine_hostnames(char **full_hostname, char **llmnr_hostname, char
 static char* fallback_hostname(void) {
 
         /* Determine the fall back hostname. For exposing this system to the outside world, we cannot have it
-         * to be "localhost" even if that's the default hostname. In this case, let's revert to "linux"
+         * to be "localhost" even if that's the default hostname. In this case, let's revert to "gnu-linux"
          * instead. */
 
         _cleanup_free_ char *n = get_default_hostname();
@@ -378,7 +378,7 @@ static char* fallback_hostname(void) {
                 return NULL;
 
         if (is_localhost(n))
-                return strdup("linux");
+                return strdup("gnu-linux");
 
         return TAKE_PTR(n);
 }
