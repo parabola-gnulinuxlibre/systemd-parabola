@@ -111,7 +111,7 @@
         <term><varname>SplitMode=</varname></term>
 
         <listitem><para>Controls whether to split up journal files per user, either <literal>uid</literal> or
-        <literal>none</literal>. Split journal files are primarily useful for access control: on UNIX/Linux access
+        <literal>none</literal>. Split journal files are primarily useful for access control: on GNU/Linux access
         control is managed per file, and the journal daemon will assign users read access to their journal files. If
         <literal>uid</literal>, all regular users will each get their own journal files, and system users will log to
         the system journal. If <literal>none</literal>, journal files are not split up by user and all messages are

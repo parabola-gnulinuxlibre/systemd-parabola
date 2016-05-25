@@ -40,7 +40,7 @@
   <refsect1>
     <title>Description</title>
 
-    <para>systemd is a system and service manager for Linux operating
+    <para>systemd is a system and service manager for GNU/Linux operating
     systems. When run as first process on boot (as PID 1), it acts as
     init system that brings up and maintains userspace
     services.</para>
@@ -888,10 +888,10 @@
     <title>Kernel Command Line</title>
 
     <para>When run as system instance systemd parses a number of
-    kernel command line arguments<footnote><para>If run inside a Linux
+    kernel command line arguments<footnote><para>If run inside a
     container these arguments may be passed as command line arguments
     to systemd itself, next to any of the command line options listed
-    in the Options section above. If run outside of Linux containers,
+    in the Options section above. If run outside of a container,
     these arguments are parsed from <filename>/proc/cmdline</filename>
     instead.</para></footnote>:</para>
 

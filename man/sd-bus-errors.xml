@@ -102,7 +102,7 @@
 
     <para>In addition to this list, in sd-bus, the special error
     namespace <literal>System.Error.</literal> is used to map
-    arbitrary Linux system errors (as defined by <citerefentry
+    arbitrary GNU/Linux system errors (as defined by <citerefentry
     project='man-pages'><refentrytitle>errno</refentrytitle><manvolnum>3</manvolnum></citerefentry>)
     to D-Bus errors and back. For example, the error
     <constant>EUCLEAN</constant> is mapped to
