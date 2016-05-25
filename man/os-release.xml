@@ -339,7 +339,7 @@
             production use. Generally, stable releases become end-of-life soon after the next major stable
             release is out, although this might not be the case if, for example, a distribution adopts a
             rolling release model and still be production ready. Examples include Fedora 40, Ubuntu 23.10,
-            OpenSUSE Tumbleweed, and Arch Linux.</para></listitem>
+            OpenSUSE Tumbleweed, and Parabola GNU/Linux-libre.</para></listitem>
 
             <listitem><para><literal>lts</literal> is for long term support releases of the system, suitable
             for production use and supported for an extended period of time. Generally, LTS releases
