@@ -35,7 +35,7 @@
     <title>Description</title>
 
     <para><filename>sd-event.h</filename> provides a generic event
-    loop implementation, based on Linux <citerefentry
+    loop implementation, based on Linux kernel <citerefentry
     project='man-pages'><refentrytitle>epoll</refentrytitle><manvolnum>7</manvolnum></citerefentry>.
     </para>
 

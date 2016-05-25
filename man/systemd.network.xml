@@ -1118,7 +1118,7 @@ Table=1234</programlisting></para>
           <para>Takes a boolean. Joining multicast group on ethernet level via
           <command>ip maddr</command> command would not work if we have an Ethernet switch that does
           IGMP snooping since the switch would not replicate multicast packets on  ports that did not
-          have IGMP reports for the multicast addresses. Linux vxlan interfaces created via
+          have IGMP reports for the multicast addresses. Linux kernel vxlan interfaces created via
           <command>ip link add vxlan</command> or networkd's netdev kind vxlan have the group option
           that enables them to do the required join. By extending <command>ip address</command> command
           with option <literal>autojoin</literal> we can get similar functionality for openvswitch (OVS)
@@ -1132,7 +1132,7 @@ Table=1234</programlisting></para>
         <listitem>
 
           <para>This setting provides a method for integrating static and dynamic network configuration into
-          Linux <ulink url="https://docs.kernel.org/netlabel/index.html">NetLabel</ulink> subsystem rules,
+          Linux kernel <ulink url="https://docs.kernel.org/netlabel/index.html">NetLabel</ulink> subsystem rules,
           used by <ulink url="https://en.wikipedia.org/wiki/Linux_Security_Modules">Linux Security Modules
           (LSMs)</ulink> for network access control. The label, with suitable LSM rules, can be used to
           control connectivity of (for example) a service with peers in the local network. At least with
@@ -1152,7 +1152,7 @@ Table=1234</programlisting></para>
           deconfigured. Failures to manage the labels will be ignored.</para>
 
           <para>Warning: Once labeling is enabled for network traffic, a lot of LSM access control points in
-          Linux networking stack go from dormant to active. Care should be taken to avoid getting into a
+          Linux kernel networking stack go from dormant to active. Care should be taken to avoid getting into a
           situation where for example remote connectivity is broken, when the security policy hasn't been
           updated to consider LSM per-packet access controls and no rules would allow any network
           traffic. Also note that additional configuration with <citerefentry
@@ -1893,7 +1893,7 @@ allow my_server_t localnet_peer_t:peer recv;</programlisting>
       <varlistentry>
         <term><varname>SocketPriority=</varname></term>
         <listitem>
-          <para>The Linux socket option <constant>SO_PRIORITY</constant> applied to the raw IP socket used for
+          <para>The Linux kernel socket option <constant>SO_PRIORITY</constant> applied to the raw IP socket used for
           initial DHCPv4 messages. Unset by default. Usual values range from 0 to 6.
           More details about <constant>SO_PRIORITY</constant> socket option in
           <citerefentry project='man-pages'><refentrytitle>socket</refentrytitle><manvolnum>7</manvolnum></citerefentry>.

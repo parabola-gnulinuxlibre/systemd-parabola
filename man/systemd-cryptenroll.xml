@@ -309,7 +309,7 @@
               <row>
                 <entry>9</entry>
                 <entry>The Linux kernel measures all initrds it receives into this PCR.</entry>
-                <!-- Strictly speaking only Linux >= 5.17 using the LOAD_FILE2 protocol, see https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f046fff8bc4c4d8f8a478022e76e40b818f692df -->
+                <!-- Strictly speaking only Linux kernel >= 5.17 using the LOAD_FILE2 protocol, see https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f046fff8bc4c4d8f8a478022e76e40b818f692df -->
               </row>
 
               <row>

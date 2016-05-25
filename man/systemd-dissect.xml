@@ -84,7 +84,7 @@
       partition only. (This partition is assumed to contain the root file system of the OS.)</para></listitem>
     </orderedlist>
 
-    <para>OS images may use any kind of Linux-supported file systems. In addition they may make use of LUKS
+    <para>OS images may use any kind of Linux-kernel-supported file systems. In addition they may make use of LUKS
     disk encryption, and contain Verity integrity information. Note that qualifying OS images may be booted
     with <citerefentry><refentrytitle>systemd-nspawn</refentrytitle><manvolnum>1</manvolnum></citerefentry>'s
     <option>--image=</option> switch, and be used as root file system for system service using the

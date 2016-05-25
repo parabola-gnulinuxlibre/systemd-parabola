@@ -107,7 +107,7 @@
     <parameter>fd</parameter> parameter takes the UNIX file descriptor
     to watch, which may refer to a socket, a FIFO, a message queue, a
     serial connection, a character device, or any other file descriptor
-    compatible with Linux
+    compatible with Linux kernel
     <citerefentry project='man-pages'><refentrytitle>epoll</refentrytitle><manvolnum>7</manvolnum></citerefentry>. The
     <parameter>events</parameter> parameter takes a bit mask of events
     to watch for, a combination of the following event flags:

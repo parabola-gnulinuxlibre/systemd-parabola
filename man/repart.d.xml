@@ -138,7 +138,7 @@
 
               <row>
                 <entry><constant>linux-generic</constant></entry>
-                <entry>Generic Linux file system partition</entry>
+                <entry>Generic GNU/Linux file system partition</entry>
               </row>
 
               <row>

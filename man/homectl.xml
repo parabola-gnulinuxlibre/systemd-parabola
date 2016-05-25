@@ -372,7 +372,7 @@
       <varlistentry>
         <term><option>--fido2-device=</option><replaceable>PATH</replaceable></term>
 
-        <listitem><para>Takes a path to a Linux <literal>hidraw</literal> device
+        <listitem><para>Takes a path to a Linux kernel <literal>hidraw</literal> device
         (e.g. <filename>/dev/hidraw1</filename>), referring to a FIDO2 security token implementing the
         <literal>hmac-secret</literal> extension that shall be able to unlock the user account. A random salt
         value is generated on the host and passed to the FIDO2 device, which calculates a HMAC hash of the

@@ -39,7 +39,7 @@
     <title>Description</title>
 
     <para><command>systemd-cgls</command> recursively shows the
-    contents of the selected Linux control group hierarchy in a tree.
+    contents of the selected Linux kernel control group hierarchy in a tree.
     If arguments are specified, shows all member processes of the
     specified control groups plus all their subgroups and their
     members. The control groups may either be specified by their full

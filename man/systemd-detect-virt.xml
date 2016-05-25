@@ -155,12 +155,12 @@
 
           <row>
             <entry><varname>lxc</varname></entry>
-            <entry>Linux container implementation by LXC</entry>
+            <entry>Container implementation by LXC</entry>
           </row>
 
           <row>
             <entry><varname>lxc-libvirt</varname></entry>
-            <entry>Linux container implementation by libvirt</entry>
+            <entry>Container implementation by libvirt</entry>
           </row>
 
           <row>
@@ -207,8 +207,8 @@
     conjunction, only the latter will be identified (unless
     <option>--vm</option> is passed).</para>
     <para> Windows Subsystem for Linux is not a Linux container,
-    but an environment for running Linux userspace applications on
-    top of the Windows kernel using a Linux-compatible interface.
+    but an environment for running GNU/Linux userspace applications on
+    top of the Windows kernel using a Linux-kernel-compatible interface.
     WSL is categorized as a container for practical purposes.
     Multiple WSL environments share the same kernel and services
     should generally behave like when being run in a container.</para>

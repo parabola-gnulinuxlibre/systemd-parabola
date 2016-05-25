@@ -404,7 +404,7 @@ L     /tmp/foobar -    -    -     -   /dev/null</programlisting>
           names. This can be useful for setting SMACK labels. Does not follow symlinks.</para>
 
           <para>Please note that extended attributes settable with this line type are a different concept
-          from the Linux file attributes settable with <varname>h</varname>/<varname>H</varname>, see
+          from the Linux kernel file attributes settable with <varname>h</varname>/<varname>H</varname>, see
           below.</para></listitem>
         </varlistentry>
 
@@ -415,7 +415,7 @@ L     /tmp/foobar -    -    -     -   /dev/null</programlisting>
 
         <varlistentry>
           <term><varname>h</varname></term>
-          <listitem><para>Set Linux file/directory attributes. Lines of this type accept shell-style globs in
+          <listitem><para>Set Linux kernel file/directory attributes. Lines of this type accept shell-style globs in
           place of normal path names.</para>
 
           <para>The format of the argument field is <varname>[+-=][aAcCdDeijPsStTu]</varname>. The prefix
@@ -431,7 +431,7 @@ L     /tmp/foobar -    -    -     -   /dev/null</programlisting>
           corresponding to the letters listed here. All other attributes will be left untouched. Does not
           follow symlinks.</para>
 
-          <para>Please note that the Linux file attributes settable with this line type are a different
+          <para>Please note that the Linux kernel file attributes settable with this line type are a different
           concept from the extended attributes settable with <varname>t</varname>/<varname>T</varname>,
           see above.</para></listitem>
         </varlistentry>

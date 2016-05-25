@@ -446,7 +446,7 @@
         for details on the per-unit settings. <varname>DefaultTasksAccounting=</varname> defaults to yes,
         <varname>DefaultMemoryAccounting=</varname> to
         &MEMORY_ACCOUNTING_DEFAULT;. <varname>DefaultCPUAccounting=</varname> defaults to yes if enabling CPU
-        accounting doesn't require the CPU controller to be enabled (Linux 4.15+ using the unified hierarchy
+        accounting doesn't require the CPU controller to be enabled (Linux kernel 4.15+ using the unified hierarchy
         for resource control), otherwise it defaults to no. The other three settings default to
         no.</para></listitem>
       </varlistentry>
@@ -513,7 +513,7 @@
       <varlistentry>
         <term><varname>DefaultOOMPolicy=</varname></term>
 
-        <listitem><para>Configure the default policy for reacting to processes being killed by the Linux
+        <listitem><para>Configure the default policy for reacting to processes being killed by the Linux kernel
         Out-Of-Memory (OOM) killer or <command>systemd-oomd</command>. This may be used to pick a global default for the per-unit
         <varname>OOMPolicy=</varname> setting. See
         <citerefentry><refentrytitle>systemd.service</refentrytitle><manvolnum>5</manvolnum></citerefentry>

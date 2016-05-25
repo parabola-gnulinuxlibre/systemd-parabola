@@ -320,7 +320,7 @@ node /org/freedesktop/machine1 {
       service that registers the machine, a class string, the PID of the leader process of the machine, an
       optional root directory of the container, and an array of additional properties to use for the scope
       registration. The virtual machine name must be suitable as a hostname, and hence should follow the usual
-      DNS hostname rules, as well as the Linux hostname restrictions. Specifically, only 7 bit ASCII is
+      DNS hostname rules, as well as the Linux kernel hostname restrictions. Specifically, only 7 bit ASCII is
       permitted, a maximum length of 64 characters is enforced, only characters from the set
       <literal>a-zA-Z0-9-_.</literal> are allowed, the name may not begin with a dot, and it may not contain
       two dots immediately following each other. Container and VM managers should ideally use the hostname

@@ -378,7 +378,7 @@ DATAERR 65     BSD
     <refsect2>
       <title><command>systemd-analyze capability <optional><replaceable>CAPABILITY</replaceable>...</optional></command></title>
 
-      <para>This command prints a list of Linux capabilities along with their numeric IDs. See <citerefentry
+      <para>This command prints a list of Linux kernel capabilities along with their numeric IDs. See <citerefentry
       project='man-pages'><refentrytitle>capabilities</refentrytitle><manvolnum>7</manvolnum></citerefentry>
       for details. If no argument is specified the full list of capabilities known to the service manager and
       the kernel is shown. Capabilities defined by the kernel but not known to the service manager are shown

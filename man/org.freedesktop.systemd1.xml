@@ -1226,7 +1226,7 @@ node /org/freedesktop/systemd1 {
 
       <para><function>GetUnitByPID()</function> may be used to get the unit object path of the unit a process
       ID belongs to. It takes a UNIX PID and returns the object path. The PID must refer to an existing system process.
-      <function>GetUnitByPIDFD()</function> may be used to query with a Linux PIDFD (see:
+      <function>GetUnitByPIDFD()</function> may be used to query with a Linux kernel PIDFD (see:
       <citerefentry><refentrytitle>pidfd_open</refentrytitle><manvolnum>2</manvolnum></citerefentry>) instead
       of a PID, which is safer as UNIX PIDs can be recycled. The latter method returns the unit id and the
       invocation id together with the unit object path.</para>

@@ -417,7 +417,7 @@
           <varlistentry>
             <term><varname>SECLABEL{<replaceable>module</replaceable>}</varname></term>
             <listitem>
-              <para>Applies the specified Linux Security Module label to the device node.</para>
+              <para>Applies the specified SELinux Security Module label to the device node.</para>
             </listitem>
           </varlistentry>
 

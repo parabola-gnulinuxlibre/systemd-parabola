@@ -34,7 +34,7 @@
     <title>Description</title>
 
     <para>Unit configuration files for services, slices, scopes, sockets, mount points, and swap devices share a subset
-    of configuration options for resource control of spawned processes. Internally, this relies on the Linux Control
+    of configuration options for resource control of spawned processes. Internally, this relies on the Linux kernel Control
     Groups (cgroups) kernel concept for organizing processes in a hierarchical tree of named groups for the purpose of
     resource management.</para>
 
