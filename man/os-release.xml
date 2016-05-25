@@ -152,7 +152,7 @@
           <listitem><para>A lower-case string (no spaces or other characters outside of 0–9, a–z, ".", "_"
           and "-") identifying the operating system, excluding any version information and suitable for
           processing by scripts or usage in generated filenames. If not set, a default of
-          <literal>ID=linux</literal> may be used. Note that even though this string may not include
+          <literal>ID=gnu-linux</literal> may be used. Note that even though this string may not include
           characters that require shell quoting, quoting may nevertheless be used.</para>
 
           <para>Examples: <literal>ID=fedora</literal>, <literal>ID=debian</literal>.</para></listitem>
