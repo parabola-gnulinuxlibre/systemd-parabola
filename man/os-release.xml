@@ -144,7 +144,7 @@
           <term><varname>NAME=</varname></term>
 
           <listitem><para>A string identifying the operating system, without a version component, and
-          suitable for presentation to the user. If not set, a default of <literal>NAME=Linux</literal> may
+          suitable for presentation to the user. If not set, a default of <literal>NAME=GNU/Linux</literal> may
           be used.</para>
 
           <para>Examples: <literal>NAME=Fedora</literal>, <literal>NAME="Debian GNU/Linux"</literal>.
