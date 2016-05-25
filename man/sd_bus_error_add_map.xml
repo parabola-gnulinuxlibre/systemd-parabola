@@ -58,7 +58,7 @@
 
     <para>The <function>sd_bus_error_add_map()</function> call may be
     used to register additional mappings for converting D-Bus errors
-    to Linux <varname>errno</varname>-style errors. The mappings
+    to GNU/Linux <varname>errno</varname>-style errors. The mappings
     defined with this call are consulted by calls such as
     <citerefentry><refentrytitle>sd_bus_error_set</refentrytitle><manvolnum>3</manvolnum></citerefentry>
     or

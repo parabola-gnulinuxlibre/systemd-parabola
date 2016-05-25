@@ -867,7 +867,7 @@
     <para>The <command>machinectl</command> tool operates on machines
     and images whose names must be chosen following strict
     rules. Machine names must be suitable for use as host names
-    following a conservative subset of DNS and UNIX/Linux
+    following a conservative subset of DNS and GNU/Linux
     semantics. Specifically, they must consist of one or more
     non-empty label strings, separated by dots. No leading or trailing
     dots are allowed. No sequences of multiple dots are allowed. The

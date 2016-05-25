@@ -144,7 +144,7 @@
     <refsect2>
       <title>New-Style Daemons</title>
 
-      <para>Modern services for Linux should be implemented as
+      <para>Modern services for GNU/Linux should be implemented as
       new-style daemons. This makes it easier to supervise and control
       them at runtime and simplifies their implementation.</para>
 
@@ -285,7 +285,7 @@
       as detailed in the <ulink
       url="http://refspecs.linuxbase.org/LSB_3.1.1/LSB-Core-generic/LSB-Core-generic/iniscrptact.html">LSB
       Linux Standard Base Core Specification</ulink>. This method of
-      activation is supported ubiquitously on Linux init systems, both
+      activation is supported ubiquitously on GNU/Linux init systems, both
       old-style and new-style systems. Among other issues, SysV init
       scripts have the disadvantage of involving shell scripts in the
       boot process. New-style init systems generally employ updated
