@@ -1638,11 +1638,12 @@ After=sys-subsystem-net-devices-ens1.device</programlisting>
   <refsect1>
     <title>Examples</title>
 
+<!-- TODO: This example needs switched to an FSDG OS; but I'm not sure of a good machinectl-compatible image to use.
     <example>
       <title>Download a
       <ulink url="https://getfedora.org">Fedora</ulink> image and start a shell in it</title>
 
-      <programlisting># machinectl pull-raw --verify=no \
+      <programlisting># machinectl pull-raw -&2D;verify=no \
       https://download.fedoraproject.org/pub/fedora/linux/releases/&fedora_latest_version;/Cloud/x86_64/images/Fedora-Cloud-Base-&fedora_latest_version;-&fedora_cloud_release;.x86_64.raw.xz \
       Fedora-Cloud-Base-&fedora_latest_version;-&fedora_cloud_release;.x86-64
 # systemd-nspawn -M Fedora-Cloud-Base-&fedora_latest_version;-&fedora_cloud_release;.x86-64</programlisting>
@@ -1651,37 +1652,36 @@ After=sys-subsystem-net-devices-ens1.device</programlisting>
       <citerefentry><refentrytitle>machinectl</refentrytitle><manvolnum>1</manvolnum></citerefentry>
       and opens a shell in it.</para>
     </example>
+-->
 
     <example>
-      <title>Build and boot a minimal Fedora distribution in a container</title>
+      <title>Build and boot a minimal BLAG distribution in a container</title>
 
-      <programlisting># dnf -y --releasever=&fedora_latest_version; --installroot=/var/lib/machines/f&fedora_latest_version; \
-      --repo=fedora --repo=updates --setopt=install_weak_deps=False install \
-      passwd dnf fedora-release vim-minimal systemd systemd-networkd
-# systemd-nspawn -bD /var/lib/machines/f&fedora_latest_version;</programlisting>
+      <programlisting># dnf -y --releasever=&blag_latest_version;k --installroot=/var/lib/machines/blag&blag_latest_version; \
+      --disablerepo='*' --enablerepo=blag --enablerepo=updates install \
+      systemd passwd dnf blag-release vim-minimal glibc-minimal-langpack
+# systemd-nspawn -bD /var/lib/machines/blag&blag_latest_version;</programlisting>
 
-      <para>This installs a minimal Fedora distribution into the
-      directory <filename index="false">/var/lib/machines/f&fedora_latest_version;</filename>
+      <para>This installs a minimal BLAG distribution into the
+      directory <filename index="false">/var/lib/machines/blag&blag_latest_version;</filename>
       and then boots that OS in a namespace container. Because the installation
       is located underneath the standard <filename>/var/lib/machines/</filename>
       directory, it is also possible to start the machine using
-      <command>systemd-nspawn -M f&fedora_latest_version;</command>.</para>
+      <command>systemd-nspawn -M blag&blag_latest_version;</command>.</para>
     </example>
 
     <example>
-      <title>Spawn a shell in a container of a minimal Debian unstable distribution</title>
+      <title>Spawn a shell in a container of a minimal gNewSense unstable distribution</title>
 
-      <programlisting># debootstrap unstable ~/debian-tree/
-# systemd-nspawn -D ~/debian-tree/</programlisting>
+      <programlisting># debootstrap ucclia ~/gnewsense-tree/
+# systemd-nspawn -D ~/gnewsense-tree/</programlisting>
 
-      <para>This installs a minimal Debian unstable distribution into
-      the directory <filename>~/debian-tree/</filename> and then
+      <para>This installs a minimal gNewSense Ucclia distribution into
+      the directory <filename>~/gnewsense-tree/</filename> and then
       spawns a shell from this image in a namespace container.</para>
 
       <para><command>debootstrap</command> supports
-      <ulink url="https://www.debian.org">Debian</ulink>,
-      <ulink url="https://www.ubuntu.com">Ubuntu</ulink>,
-      and <ulink url="https://www.tanglu.org">Tanglu</ulink>
+      <ulink url="http://www.gnewsense.org">gNewSense</ulink>
       out of the box, so the same command can be used to install any of those. For other
       distributions from the Debian family, a mirror has to be specified, see
       <citerefentry project='die-net'><refentrytitle>debootstrap</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
@@ -1690,29 +1690,31 @@ After=sys-subsystem-net-devices-ens1.device</programlisting>
 
     <example>
       <title>Boot a minimal
-      <ulink url="https://www.archlinux.org">Arch Linux</ulink> distribution in a container</title>
+      <ulink url="https://www.parabola.nu">Parabola GNU/Linux-libre</ulink> distribution in a container</title>
 
-      <programlisting># pacstrap -c ~/arch-tree/ base
-# systemd-nspawn -bD ~/arch-tree/</programlisting>
+      <programlisting># pacstrap -c ~/parabola-tree/ base
+# systemd-nspawn -bD ~/parabola-tree/</programlisting>
 
-      <para>This installs a minimal Arch Linux distribution into the
-      directory <filename>~/arch-tree/</filename> and then boots an OS
+      <para>This installs a minimal Parabola GNU/Linux-libre distribution into the
+      directory <filename>~/parabola-tree/</filename> and then boots an OS
       in a namespace container in it.</para>
     </example>
 
+<!-- TODO: This example needs switched to an FSDG OS
     <example>
       <title>Install the
       <ulink url="https://software.opensuse.org/distributions/tumbleweed">OpenSUSE Tumbleweed</ulink>
       rolling distribution</title>
 
-      <programlisting># zypper --root=/var/lib/machines/tumbleweed ar -c \
+      <programlisting># zypper -&2Droot=/var/lib/machines/tumbleweed ar -c \
       https://download.opensuse.org/tumbleweed/repo/oss tumbleweed
-# zypper --root=/var/lib/machines/tumbleweed refresh
-# zypper --root=/var/lib/machines/tumbleweed install --no-recommends \
+# zypper -&2Droot=/var/lib/machines/tumbleweed refresh
+# zypper -&2Droot=/var/lib/machines/tumbleweed install -&2Dno-recommends \
       systemd shadow zypper openSUSE-release vim
 # systemd-nspawn -M tumbleweed passwd root
 # systemd-nspawn -M tumbleweed -b</programlisting>
     </example>
+-->
 
     <example>
       <title>Boot into an ephemeral snapshot of the host system</title>

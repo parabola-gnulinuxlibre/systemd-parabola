@@ -939,11 +939,12 @@
       to open a shell in it.</para>
     </example>
 
+<!-- TODO: This example needs switched to an FSDG OS; but I'm not sure of a good machinectl-compatible image to use.
     <example>
       <title>Download a Fedora image, set a root password in it, start
       it as a service</title>
 
-      <programlisting># machinectl pull-raw --verify=no \
+      <programlisting># machinectl pull-raw -&2D;verify=no \
       https://download.fedoraproject.org/pub/fedora/linux/releases/&fedora_latest_version;/Cloud/x86_64/images/Fedora-Cloud-Base-&fedora_latest_version;-&fedora_cloud_release;.x86_64.raw.xz \
       Fedora-Cloud-Base-&fedora_latest_version;-&fedora_cloud_release;.x86-64
 # systemd-nspawn -M Fedora-Cloud-Base-&fedora_latest_version;-&fedora_cloud_release;.x86-64
@@ -958,6 +959,7 @@
       the machine started as system service. With the last command a
       login prompt into the container is requested.</para>
     </example>
+-->
 
     <example>
       <title>Exports a container image as tar file</title>

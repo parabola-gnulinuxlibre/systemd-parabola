@@ -142,7 +142,7 @@
           suitable for presentation to the user. If not set, a default of <literal>NAME=GNU/Linux</literal> may
           be used.</para>
 
-          <para>Examples: <literal>NAME=Fedora</literal>, <literal>NAME="Debian GNU/Linux"</literal>.
+          <para>Examples: <literal>NAME=BLAG</literal>, <literal>NAME="gNewSense"</literal>.
           </para></listitem>
         </varlistentry>
 
@@ -155,7 +155,7 @@
           <literal>ID=gnu-linux</literal> may be used. Note that even though this string may not include
           characters that require shell quoting, quoting may nevertheless be used.</para>
 
-          <para>Examples: <literal>ID=fedora</literal>, <literal>ID=debian</literal>.</para></listitem>
+          <para>Examples: <literal>ID=blag</literal>, <literal>ID=gnewsense</literal>.</para></listitem>
         </varlistentry>
 
         <varlistentry>
@@ -172,9 +172,9 @@
           closely the local operating system relates to the listed ones, starting with the closest. This
           field is optional.</para>
 
-          <para>Examples: for an operating system with <literal>ID=centos</literal>, an assignment of
+          <para>Examples: for an operating system with <literal>ID=blag</literal>, an assignment of
           <literal>ID_LIKE="rhel fedora"</literal> would be appropriate. For an operating system with
-          <literal>ID=ubuntu</literal>, an assignment of <literal>ID_LIKE=debian</literal> is appropriate.
+          <literal>ID=gnewsense</literal>, an assignment of <literal>ID_LIKE=gnewsense</literal> is appropriate.
           </para></listitem>
         </varlistentry>
 
@@ -185,7 +185,7 @@
           user. May or may not contain a release code name or OS version of some kind, as suitable. If not
           set, a default of <literal>PRETTY_NAME="GNU/Linux"</literal> may be used</para>
 
-          <para>Example: <literal>PRETTY_NAME="Fedora 17 (Beefy Miracle)"</literal>.</para></listitem>
+          <para>Example: <literal>PRETTY_NAME="BLAG 210k (Spartakus)"</literal>.</para></listitem>
         </varlistentry>
 
         <varlistentry>
@@ -195,7 +195,7 @@
           url="http://scap.nist.gov/specifications/cpe/">Common Platform Enumeration Specification</ulink> as
           proposed by the NIST. This field is optional.</para>
 
-          <para>Example: <literal>CPE_NAME="cpe:/o:fedoraproject:fedora:17"</literal></para></listitem>
+          <para>Example: <literal>CPE_NAME="cpe:/o:blagblagblag:blag:210k"</literal></para></listitem>
         </varlistentry>
 
         <varlistentry>
@@ -238,7 +238,7 @@
           information, possibly including a release code name, and suitable for presentation to the
           user. This field is optional.</para>
 
-          <para>Examples: <literal>VERSION=17</literal>, <literal>VERSION="17 (Beefy Miracle)"</literal>.
+          <para>Examples: <literal>VERSION=210k</literal>, <literal>VERSION="210k (Spartakus)"</literal>.
           </para></listitem>
         </varlistentry>
 
@@ -250,7 +250,7 @@
           or release code name, and suitable for processing by scripts or usage in generated filenames. This
           field is optional.</para>
 
-          <para>Examples: <literal>VERSION_ID=17</literal>, <literal>VERSION_ID=11.04</literal>.
+          <para>Examples: <literal>VERSION_ID=210k</literal>, <literal>VERSION_ID=7.0</literal>.
           </para></listitem>
         </varlistentry>
 
@@ -346,7 +346,7 @@
           need to be referenced, it is recommended to provide an online landing page linking all available
           resources.</para>
 
-          <para>Examples: <literal>HOME_URL="https://fedoraproject.org/"</literal>,
+          <para>Examples: <literal>HOME_URL="https://www.blagblagblag.org/"</literal>,
           <literal>BUG_REPORT_URL="https://bugzilla.redhat.com/"</literal>.</para></listitem>
         </varlistentry>
 
@@ -493,25 +493,19 @@
     <example>
       <title><filename>os-release</filename> file for Fedora Workstation</title>
 
-      <programlisting>NAME=Fedora
-VERSION="32 (Workstation Edition)"
-ID=fedora
-VERSION_ID=32
-PRETTY_NAME="Fedora 32 (Workstation Edition)"
-ANSI_COLOR="0;38;2;60;110;180"
-LOGO=fedora-logo-icon
-CPE_NAME="cpe:/o:fedoraproject:fedora:32"
-HOME_URL="https://fedoraproject.org/"
-DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora/f32/system-administrators-guide/"
-SUPPORT_URL="https://fedoraproject.org/wiki/Communicating_and_getting_help"
-BUG_REPORT_URL="https://bugzilla.redhat.com/"
-REDHAT_BUGZILLA_PRODUCT="Fedora"
-REDHAT_BUGZILLA_PRODUCT_VERSION=32
-REDHAT_SUPPORT_PRODUCT="Fedora"
-REDHAT_SUPPORT_PRODUCT_VERSION=32
-PRIVACY_POLICY_URL="https://fedoraproject.org/wiki/Legal:PrivacyPolicy"
-VARIANT="Workstation Edition"
-VARIANT_ID=workstation</programlisting>
+      <programlisting>NAME=Parabola
+VERSION="rolling-release"
+ID=parabola
+ID_LIKE=arch
+VERSION_ID=rolling-release
+PRETTY_NAME="Parabola GNU/Linux-libre"
+ANSI_COLOR="1;35"
+LOGO=parabola-logo-icon
+CPE_NAME="cpe:/o:parabola:parabola:rolling-release"
+HOME_URL="https://www.parabola.nu/"
+DOCUMENTATION_URL="https://wiki.parabola.nu/"
+SUPPORT_URL="https://labs.parabola.nu/projects/parabola-community-forum/boards"
+BUG_REPORT_URL="https://labs.parabola.nu/"</programlisting>
     </example>
 
     <example>
