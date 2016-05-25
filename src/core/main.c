@@ -1234,11 +1234,11 @@ static int status_welcome(void) {
                 return status_printf(NULL, false, false,
                                      "\nWelcome to \x1B[%sm%s\x1B[0m!\n",
                                      isempty(ansi_color) ? "1" : ansi_color,
-                                     isempty(pretty_name) ? "Linux" : pretty_name);
+                                     isempty(pretty_name) ? "GNU/Linux" : pretty_name);
         else
                 return status_printf(NULL, false, false,
                                      "\nWelcome to %s!\n",
-                                     isempty(pretty_name) ? "Linux" : pretty_name);
+                                     isempty(pretty_name) ? "GNU/Linux" : pretty_name);
 }
 
 static int write_container_id(void) {

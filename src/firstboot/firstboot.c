@@ -87,7 +87,7 @@ static void print_welcome(void) {
                                "Failed to read os-release file, ignoring: %m");
 
         printf("\nWelcome to your new installation of %s!\nPlease configure a few basic system settings:\n\n",
-               isempty(pretty_name) ? "Linux" : pretty_name);
+               isempty(pretty_name) ? "GNU/Linux" : pretty_name);
 
         press_any_key();
 

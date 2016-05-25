@@ -187,7 +187,7 @@
         suitable for presentation to the user. May or may not contain
         a release code name or OS version of some kind, as suitable.
         If not set, defaults to
-        <literal>PRETTY_NAME="Linux"</literal>. Example:
+        <literal>PRETTY_NAME="GNU/Linux"</literal>. Example:
         <literal>PRETTY_NAME="Fedora 17 (Beefy
         Miracle)"</literal>.</para></listitem>
       </varlistentry>

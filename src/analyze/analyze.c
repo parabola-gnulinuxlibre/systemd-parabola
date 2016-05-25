@@ -712,7 +712,7 @@ static int analyze_plot(int argc, char *argv[], void *userdata) {
         svg("<text x=\"20\" y=\"50\">%s</text>", pretty_times);
         if (use_full_bus)
                 svg("<text x=\"20\" y=\"30\">%s %s (%s %s %s) %s %s</text>",
-                    isempty(host->os_pretty_name) ? "Linux" : host->os_pretty_name,
+                    isempty(host->os_pretty_name) ? "GNU/Linux" : host->os_pretty_name,
                     strempty(host->hostname),
                     strempty(host->kernel_name),
                     strempty(host->kernel_release),
