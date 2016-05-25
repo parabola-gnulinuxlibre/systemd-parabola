@@ -660,7 +660,7 @@ static int analyze_plot(sd_bus *bus) {
         svg("<rect class=\"background\" width=\"100%%\" height=\"100%%\" />\n");
         svg("<text x=\"20\" y=\"50\">%s</text>", pretty_times);
         svg("<text x=\"20\" y=\"30\">%s %s (%s %s %s) %s %s</text>",
-            isempty(host->os_pretty_name) ? "Linux" : host->os_pretty_name,
+            isempty(host->os_pretty_name) ? "GNU/Linux" : host->os_pretty_name,
             strempty(host->hostname),
             strempty(host->kernel_name),
             strempty(host->kernel_release),
