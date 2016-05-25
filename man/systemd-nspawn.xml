@@ -912,46 +912,35 @@
     <title>Examples</title>
 
     <example>
-      <title>Download a Fedora image and start a shell in it</title>
+      <title>Build and boot a minimal BLAG distribution in a container</title>
 
-      <programlisting># machinectl pull-raw --verify=no http://ftp.halifax.rwth-aachen.de/fedora/linux/releases/21/Cloud/Images/x86_64/Fedora-Cloud-Base-20141203-21.x86_64.raw.xz
-# systemd-nspawn -M Fedora-Cloud-Base-20141203-21</programlisting>
-
-      <para>This downloads an image using
-      <citerefentry><refentrytitle>machinectl</refentrytitle><manvolnum>1</manvolnum></citerefentry>
-      and opens a shell in it.</para>
-    </example>
-
-    <example>
-      <title>Build and boot a minimal Fedora distribution in a container</title>
-
-      <programlisting># dnf -y --releasever=23 --installroot=/srv/mycontainer --disablerepo='*' --enablerepo=fedora --enablerepo=updates install systemd passwd dnf fedora-release vim-minimal
+      <programlisting># dnf -y --releasever=210k --installroot=/srv/mycontainer --disablerepo='*' --enablerepo=blag --enablerepo=updates install systemd passwd dnf blag-release vim-minimal
 # systemd-nspawn -bD /srv/mycontainer</programlisting>
 
-      <para>This installs a minimal Fedora distribution into the
+      <para>This installs a minimal BLAG distribution into the
       directory <filename noindex='true'>/srv/mycontainer/</filename>
       and then boots an OS in a namespace container in it.</para>
     </example>
 
     <example>
-      <title>Spawn a shell in a container of a minimal Debian unstable distribution</title>
+      <title>Spawn a shell in a container of a minimal gNewSense unstable distribution</title>
 
-      <programlisting># debootstrap --arch=amd64 unstable ~/debian-tree/
-# systemd-nspawn -D ~/debian-tree/</programlisting>
+      <programlisting># debootstrap --arch=amd64 unstable ~/gnewsense-tree/
+# systemd-nspawn -D ~/gnewsense-tree/</programlisting>
 
-      <para>This installs a minimal Debian unstable distribution into
-      the directory <filename>~/debian-tree/</filename> and then
+      <para>This installs a minimal gNewSense unstable distribution into
+      the directory <filename>~/gnewsense-tree/</filename> and then
       spawns a shell in a namespace container in it.</para>
     </example>
 
     <example>
-      <title>Boot a minimal Arch Linux distribution in a container</title>
+      <title>Boot a minimal Parabola GNU/Linux-libre distribution in a container</title>
 
-      <programlisting># pacstrap -c -d ~/arch-tree/ base
-# systemd-nspawn -bD ~/arch-tree/</programlisting>
+      <programlisting># pacstrap -c -d ~/parabola-tree/ base
+# systemd-nspawn -bD ~/parabola-tree/</programlisting>
 
-      <para>This installs a minimal Arch Linux distribution into the
-      directory <filename>~/arch-tree/</filename> and then boots an OS
+      <para>This installs a minimal Parabola GNU/Linux-libre distribution into the
+      directory <filename>~/parabola-tree/</filename> and then boots an OS
       in a namespace container in it.</para>
     </example>
 
