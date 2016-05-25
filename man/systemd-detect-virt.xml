@@ -133,12 +133,12 @@
 
           <row>
             <entry><varname>lxc</varname></entry>
-            <entry>Linux container implementation by LXC</entry>
+            <entry>Container implementation by LXC</entry>
           </row>
 
           <row>
             <entry><varname>lxc-libvirt</varname></entry>
-            <entry>Linux container implementation by libvirt</entry>
+            <entry>Container implementation by libvirt</entry>
           </row>
 
           <row>
