@@ -1832,13 +1832,13 @@ After=sys-subsystem-net-devices-ens1.device</programlisting>
 
     <example>
       <title>Boot a minimal
-      <ulink url="https://www.archlinux.org">Arch Linux</ulink> distribution in a container</title>
+      <ulink url="https://www.parabola.nu">Parabola GNU/Linux-libre</ulink> distribution in a container</title>
 
-      <programlisting># pacstrap -c ~/arch-tree/ base
-# systemd-nspawn -bD ~/arch-tree/</programlisting>
+      <programlisting># pacstrap -c ~/parabola-tree/ base
+# systemd-nspawn -bD ~/parabola-tree/</programlisting>
 
-      <para>This installs a minimal Arch Linux distribution into the
-      directory <filename>~/arch-tree/</filename> and then boots an OS
+      <para>This installs a minimal Parabola GNU/Linux-libre distribution into the
+      directory <filename>~/parabola-tree/</filename> and then boots an OS
       in a namespace container in it.</para>
     </example>
 
