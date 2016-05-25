@@ -40,7 +40,7 @@ elif [[ -f /usr/lib/os-release ]]; then
 fi
 
 if ! [[ $PRETTY_NAME ]]; then
-    PRETTY_NAME="Linux $KERNEL_VERSION"
+    PRETTY_NAME="GNU/Linux $KERNEL_VERSION"
 fi
 
 declare -a BOOT_OPTIONS
