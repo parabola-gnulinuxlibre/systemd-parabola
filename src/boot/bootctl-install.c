@@ -639,7 +639,7 @@ static int remove_from_order(uint16_t slot) {
 }
 
 static const char *pick_efi_boot_option_description(void) {
-        return arg_efi_boot_option_description ?: "Linux Boot Manager";
+        return arg_efi_boot_option_description ?: "Systemd Boot Manager";
 }
 
 static int install_variables(
