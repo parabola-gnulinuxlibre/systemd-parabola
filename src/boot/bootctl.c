@@ -665,13 +665,13 @@ static int install_variables(const char *esp_path,
                                        "Failed to determine current boot order: %m");
 
         if (first || r == 0) {
-                r = efi_add_boot_option(slot, "Linux Boot Manager",
+                r = efi_add_boot_option(slot, "Systemd Boot Manager",
                                         part, pstart, psize,
                                         uuid, path);
                 if (r < 0)
                         return log_error_errno(r, "Failed to create EFI Boot variable entry: %m");
 
-                log_info("Created EFI boot entry \"Linux Boot Manager\".");
+                log_info("Created EFI boot entry \"Systemd Boot Manager\".");
         }
 
         return insert_into_order(slot, first);
