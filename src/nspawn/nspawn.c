@@ -1309,35 +1309,24 @@ static int setup_resolv_conf(const char *dest) {
         /* Fix resolv.conf, if possible */
         where = prefix_roota(dest, "/etc/resolv.conf");
 
-        if (access("/usr/lib/systemd/resolv.conf", F_OK) >= 0) {
-                /* resolved is enabled on the host. In this, case bind mount its static resolv.conf file into the
-                 * container, so that the container can use the host's resolver. Given that network namespacing is
-                 * disabled it's only natural of the container also uses the host's resolver. It also has the big
-                 * advantage that the container will be able to follow the host's DNS server configuration changes
-                 * transparently. */
-
-                r = mount_verbose(LOG_WARNING, "/usr/lib/systemd/resolv.conf", where, NULL, MS_BIND, NULL);
-                if (r >= 0)
-                        return mount_verbose(LOG_ERR, NULL, where, NULL,
-                                             MS_BIND|MS_REMOUNT|MS_RDONLY|MS_NOSUID|MS_NODEV, NULL);
-        }
-
-        /* If that didn't work, let's copy the file */
         r = copy_file("/etc/resolv.conf", where, O_TRUNC|O_NOFOLLOW, 0644, 0);
         if (r < 0) {
-                /* If the file already exists as symlink, let's suppress the warning, under the assumption that
-                 * resolved or something similar runs inside and the symlink points there.
+                /* If the file already exists as symlink, let's
+                 * suppress the warning, under the assumption that
+                 * resolved or something similar runs inside and the
+                 * symlink points there.
                  *
-                 * If the disk image is read-only, there's also no point in complaining.
+                 * If the disk image is read-only, there's also no
+                 * point in complaining.
                  */
                 log_full_errno(IN_SET(r, -ELOOP, -EROFS) ? LOG_DEBUG : LOG_WARNING, r,
-                               "Failed to copy /etc/resolv.conf to %s, ignoring: %m", where);
+                               "Failed to copy /etc/resolv.conf to %s: %m", where);
                 return 0;
         }
 
         r = userns_lchown(where, 0, 0);
         if (r < 0)
-                log_warning_errno(r, "Failed to chown /etc/resolv.conf, ignoring: %m");
+                log_warning_errno(r, "Failed to chown /etc/resolv.conf: %m");
 
         return 0;
 }

@@ -430,12 +430,12 @@ static int manager_watch_hostname(Manager *m) {
 
         r = determine_hostname(&m->llmnr_hostname, &m->mdns_hostname);
         if (r < 0) {
-                log_info("Defaulting to hostname 'linux'.");
-                m->llmnr_hostname = strdup("linux");
+                log_info("Defaulting to hostname 'gnu-linux'.");
+                m->llmnr_hostname = strdup("gnu-linux");
                 if (!m->llmnr_hostname)
                         return log_oom();
 
-                m->mdns_hostname = strdup("linux.local");
+                m->mdns_hostname = strdup("gnu-linux.local");
                 if (!m->mdns_hostname)
                         return log_oom();
         } else

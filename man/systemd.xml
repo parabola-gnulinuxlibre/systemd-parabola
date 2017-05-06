@@ -61,7 +61,7 @@
   <refsect1>
     <title>Description</title>
 
-    <para>systemd is a system and service manager for Linux operating
+    <para>systemd is a system and service manager for GNU/Linux operating
     systems. When run as first process on boot (as PID 1), it acts as
     init system that brings up and maintains userspace
     services.</para>
