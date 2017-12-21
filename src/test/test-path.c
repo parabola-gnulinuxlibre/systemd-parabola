@@ -45,7 +45,13 @@ static int setup_test(Manager **m) {
 
         assert_se(m);
 
-        r = manager_new(UNIT_FILE_USER, true, &tmp);
+        r = enter_cgroup_subroot();
+        if (r == -ENOMEDIUM) {
+                log_notice_errno(r, "Skipping test: cgroupfs not available");
+                return EXIT_TEST_SKIP;
+        }
+
+        r = manager_new(UNIT_FILE_USER, MANAGER_TEST_RUN_MINIMAL, &tmp);
         if (MANAGER_SKIP_TEST(r)) {
                 log_notice_errno(r, "Skipping test: manager_new: %m");
                 return -EXIT_TEST_SKIP;

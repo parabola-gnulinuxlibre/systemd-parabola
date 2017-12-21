@@ -34,11 +34,17 @@ static int test_cgroup_mask(void) {
         FDSet *fdset = NULL;
         int r;
 
+        r = enter_cgroup_subroot();
+        if (r == -ENOMEDIUM) {
+                puts("Skipping test: cgroupfs not available");
+                return EXIT_TEST_SKIP;
+        }
+
         /* Prepare the manager. */
         assert_se(set_unit_path(get_testdata_dir("")) >= 0);
         assert_se(runtime_dir = setup_fake_runtime_dir());
-        r = manager_new(UNIT_FILE_USER, true, &m);
-        if (r == -EPERM || r == -EACCES) {
+        r = manager_new(UNIT_FILE_USER, MANAGER_TEST_RUN_MINIMAL, &m);
+        if (IN_SET(r, -EPERM, -EACCES)) {
                 puts("manager_new: Permission denied. Skipping test.");
                 return EXIT_TEST_SKIP;
         }
