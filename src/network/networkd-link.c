@@ -226,6 +226,9 @@ static bool link_ipv6_accept_ra_enabled(Link *link) {
         if (!link->network)
                 return false;
 
+        if (!link_ipv6ll_enabled(link))
+                return false;
+
         /* If unset use system default (enabled if local forwarding is disabled.
          * disabled if local forwarding is enabled).
          * If set, ignore or enforce RA independent of local forwarding state.
@@ -3082,7 +3085,8 @@ static int link_carrier_lost(Link *link) {
                 return r;
         }
 
-        (void) sd_dhcp_server_stop(link->dhcp_server);
+        if (link_dhcp4_server_enabled(link))
+                (void) sd_dhcp_server_stop(link->dhcp_server);
 
         r = link_drop_config(link);
         if (r < 0)
