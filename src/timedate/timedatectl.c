@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: LGPL-2.1+ */
 /***
   This file is part of systemd.
 
@@ -39,18 +40,6 @@ static bool arg_ask_password = true;
 static BusTransport arg_transport = BUS_TRANSPORT_LOCAL;
 static char *arg_host = NULL;
 static bool arg_adjust_system_clock = false;
-
-static void polkit_agent_open_if_enabled(void) {
-
-        /* Open the polkit agent as a child process if necessary */
-        if (!arg_ask_password)
-                return;
-
-        if (arg_transport != BUS_TRANSPORT_LOCAL)
-                return;
-
-        polkit_agent_open();
-}
 
 typedef struct StatusInfo {
         usec_t time;
@@ -195,7 +184,7 @@ static int set_time(sd_bus *bus, char **args, unsigned n) {
         assert(args);
         assert(n == 2);
 
-        polkit_agent_open_if_enabled();
+        polkit_agent_open_if_enabled(arg_transport, arg_ask_password);
 
         r = parse_timestamp(args[1], &t);
         if (r < 0) {
@@ -224,7 +213,7 @@ static int set_timezone(sd_bus *bus, char **args, unsigned n) {
         assert(args);
         assert(n == 2);
 
-        polkit_agent_open_if_enabled();
+        polkit_agent_open_if_enabled(arg_transport, arg_ask_password);
 
         r = sd_bus_call_method(bus,
                                "org.freedesktop.timedate1",
@@ -247,7 +236,7 @@ static int set_local_rtc(sd_bus *bus, char **args, unsigned n) {
         assert(args);
         assert(n == 2);
 
-        polkit_agent_open_if_enabled();
+        polkit_agent_open_if_enabled(arg_transport, arg_ask_password);
 
         b = parse_boolean(args[1]);
         if (b < 0) {
@@ -276,7 +265,7 @@ static int set_ntp(sd_bus *bus, char **args, unsigned n) {
         assert(args);
         assert(n == 2);
 
-        polkit_agent_open_if_enabled();
+        polkit_agent_open_if_enabled(arg_transport, arg_ask_password);
 
         b = parse_boolean(args[1]);
         if (b < 0) {
@@ -484,7 +473,7 @@ static int timedatectl_main(sd_bus *bus, int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-        sd_bus *bus = NULL;
+        _cleanup_(sd_bus_flush_close_unrefp) sd_bus *bus = NULL;
         int r;
 
         setlocale(LC_ALL, "");
@@ -504,7 +493,6 @@ int main(int argc, char *argv[]) {
         r = timedatectl_main(bus, argc, argv);
 
 finish:
-        sd_bus_flush_close_unref(bus);
         pager_close();
 
         return r < 0 ? EXIT_FAILURE : EXIT_SUCCESS;

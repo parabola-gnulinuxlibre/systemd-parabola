@@ -3,6 +3,8 @@
   "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
 <!--
+  SPDX-License-Identifier: LGPL-2.1+
+
   This file is part of systemd.
 
   Copyright 2010 Lennart Poettering
@@ -154,12 +156,12 @@
 
           <row>
             <entry><varname>lxc</varname></entry>
-            <entry>Linux container implementation by LXC</entry>
+            <entry>Container implementation by LXC</entry>
           </row>
 
           <row>
             <entry><varname>lxc-libvirt</varname></entry>
-            <entry>Linux container implementation by libvirt</entry>
+            <entry>Container implementation by libvirt</entry>
           </row>
 
           <row>

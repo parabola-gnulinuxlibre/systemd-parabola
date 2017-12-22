@@ -3,6 +3,8 @@
   "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
 <!--
+  SPDX-License-Identifier: LGPL-2.1+
+
   This file is part of systemd.
 
   Copyright 2010 Lennart Poettering
@@ -197,7 +199,7 @@
         <listitem><para>An input parameter was invalid (out of range,
         or NULL, where that is not accepted). This is also returned if
         the passed user ID is 0xFFFF or 0xFFFFFFFF, which are
-        undefined on Linux.</para></listitem>
+        undefined on GNU/Linux.</para></listitem>
       </varlistentry>
 
       <varlistentry>

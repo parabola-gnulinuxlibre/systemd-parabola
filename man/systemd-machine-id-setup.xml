@@ -3,6 +3,8 @@
   "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 
 <!--
+  SPDX-License-Identifier: LGPL-2.1+
+
   This file is part of systemd.
 
   Copyright 2012 Lennart Poettering
@@ -88,7 +90,7 @@
       and is different for every booted instance of the
       VM.</para></listitem>
 
-      <listitem><para>Similarly, if run inside a Linux container
+      <listitem><para>Similarly, if run inside a container
       environment and a UUID is configured for the container, this is
       used to initialize the machine ID. For details, see the
       documentation of the <ulink
