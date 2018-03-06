@@ -24,14 +24,14 @@ g utmp    -     -            -
 
 # Hardware access groups
 g audio   -     -            -
-g cdrom   -     -            -
-g dialout -     -            -
 g disk    -     -            -
 g input   -     -            -
 g kvm     -     -            -
 g lp      -     -            -
+g optical -     -            -
 g render  -     -            -
-g tape    -     -            -
+g storage -     -            -
+g uucp    -     -            -
 g video   -     -            -
 
 # Default group for normal users
