@@ -2323,9 +2323,17 @@ static int inner_child(
                       arg_uid_shift,
                       arg_uid_range,
                       arg_selinux_apifs_context);
-
         if (r < 0)
                 return r;
+
+        if (!arg_network_namespace_path && arg_private_network) {
+                r = unshare(CLONE_NEWNET);
+                if (r < 0)
+                        return log_error_errno(errno, "Failed to unshare network namespace: %m");
+
+                /* Tell the parent that it can setup network interfaces. */
+                (void) barrier_place(barrier); /* #3 */
+        }
 
         r = mount_sysfs(NULL, arg_mount_settings);
         if (r < 0)
@@ -2333,7 +2341,7 @@ static int inner_child(
 
         /* Wait until we are cgroup-ified, so that we
          * can mount the right cgroup path writable */
-        if (!barrier_place_and_sync(barrier)) { /* #3 */
+        if (!barrier_place_and_sync(barrier)) { /* #4 */
                 log_error("Parent died too early");
                 return -ESRCH;
         }
@@ -2341,7 +2349,7 @@ static int inner_child(
         if (arg_use_cgns && cg_ns_supported()) {
                 r = unshare(CLONE_NEWCGROUP);
                 if (r < 0)
-                        return log_error_errno(errno, "Failed to unshare cgroup namespace");
+                        return log_error_errno(errno, "Failed to unshare cgroup namespace: %m");
                 r = mount_cgroups(
                                 "",
                                 arg_unified_cgroup_hierarchy,
@@ -2444,7 +2452,7 @@ static int inner_child(
         /* Let the parent know that we are ready and
          * wait until the parent is ready with the
          * setup, too... */
-        if (!barrier_place_and_sync(barrier)) { /* #4 */
+        if (!barrier_place_and_sync(barrier)) { /* #5 */
                 log_error("Parent died too early");
                 return -ESRCH;
         }
@@ -2568,7 +2576,6 @@ static int outer_child(
         ssize_t l;
         int r;
         _cleanup_close_ int fd = -1;
-        bool create_netns;
 
         assert(barrier);
         assert(directory);
@@ -2811,11 +2818,8 @@ static int outer_child(
         if (fd < 0)
                 return fd;
 
-        create_netns = !arg_network_namespace_path && arg_private_network;
-
         pid = raw_clone(SIGCHLD|CLONE_NEWNS|
                         arg_clone_ns_flags |
-                        (create_netns ? CLONE_NEWNET : 0) |
                         (arg_userns_mode != USER_NAMESPACE_NO ? CLONE_NEWUSER : 0));
         if (pid < 0)
                 return log_error_errno(errno, "Failed to fork inner child: %m");
@@ -3556,6 +3560,14 @@ static int run(int master,
 
         if (arg_private_network) {
 
+                if (!arg_network_namespace_path) {
+                        /* Wait until the child has unshared its network namespace. */
+                        if (!barrier_place_and_sync(&barrier)) { /* #3 */
+                                log_error("Child died too early");
+                                return -ESRCH;
+                        }
+                }
+
                 r = move_network_interfaces(*pid, arg_network_interfaces);
                 if (r < 0)
                         return r;
@@ -3679,7 +3691,7 @@ static int run(int master,
          * its setup (including cgroup-ification), and that
          * the child can now hand over control to the code to
          * run inside the container. */
-        (void) barrier_place(&barrier); /* #3 */
+        (void) barrier_place(&barrier); /* #4 */
 
         /* Block SIGCHLD here, before notifying child.
          * process_pty() will handle it with the other signals. */
@@ -3707,7 +3719,7 @@ static int run(int master,
                 return r;
 
         /* Let the child know that we are ready and wait that the child is completely ready now. */
-        if (!barrier_place_and_sync(&barrier)) { /* #4 */
+        if (!barrier_place_and_sync(&barrier)) { /* #5 */
                 log_error("Child died too early.");
                 return -ESRCH;
         }
