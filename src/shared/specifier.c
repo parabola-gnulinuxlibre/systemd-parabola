@@ -1,22 +1,4 @@
 /* SPDX-License-Identifier: LGPL-2.1+ */
-/***
-  This file is part of systemd.
-
-  Copyright 2010 Lennart Poettering
-
-  systemd is free software; you can redistribute it and/or modify it
-  under the terms of the GNU Lesser General Public License as published by
-  the Free Software Foundation; either version 2.1 of the License, or
-  (at your option) any later version.
-
-  systemd is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public License
-  along with systemd; If not, see <http://www.gnu.org/licenses/>.
-***/
 
 #include <errno.h>
 #include <stdbool.h>
@@ -28,6 +10,7 @@
 #include "sd-id128.h"
 
 #include "alloc-util.h"
+#include "fs-util.h"
 #include "hostname-util.h"
 #include "macro.h"
 #include "specifier.h"
@@ -114,8 +97,7 @@ int specifier_printf(const char *text, const Specifier table[], void *userdata, 
                         ret = t;
         }
 
-        *_ret = ret;
-        ret = NULL;
+        *_ret = TAKE_PTR(ret);
         return 0;
 }
 
@@ -234,6 +216,40 @@ int specifier_user_shell(char specifier, void *data, void *userdata, char **ret)
          * which is good. See above */
 
         return get_shell(ret);
+}
+
+int specifier_tmp_dir(char specifier, void *data, void *userdata, char **ret) {
+        const char *p;
+        char *copy;
+        int r;
+
+        r = tmp_dir(&p);
+        if (r < 0)
+                return r;
+
+        copy = strdup(p);
+        if (!copy)
+                return -ENOMEM;
+
+        *ret = copy;
+        return 0;
+}
+
+int specifier_var_tmp_dir(char specifier, void *data, void *userdata, char **ret) {
+        const char *p;
+        char *copy;
+        int r;
+
+        r = var_tmp_dir(&p);
+        if (r < 0)
+                return r;
+
+        copy = strdup(p);
+        if (!copy)
+                return -ENOMEM;
+
+        *ret = copy;
+        return 0;
 }
 
 int specifier_escape_strv(char **l, char ***ret) {

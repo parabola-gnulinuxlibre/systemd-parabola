@@ -1,23 +1,4 @@
 /* SPDX-License-Identifier: LGPL-2.1+ */
-/***
-  This file is part of systemd.
-
-  Copyright 2010 Lennart Poettering, Kay Sievers
-  Copyright 2015 Zbigniew Jędrzejewski-Szmek
-
-  systemd is free software; you can redistribute it and/or modify it
-  under the terms of the GNU Lesser General Public License as published by
-  the Free Software Foundation; either version 2.1 of the License, or
-  (at your option) any later version.
-
-  systemd is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public License
-  along with systemd; If not, see <http://www.gnu.org/licenses/>.
-***/
 
 #include <errno.h>
 #include <fcntl.h>
@@ -61,6 +42,7 @@
 #include "missing.h"
 #include "mkdir.h"
 #include "mount-util.h"
+#include "pager.h"
 #include "parse-util.h"
 #include "path-lookup.h"
 #include "path-util.h"
@@ -73,6 +55,7 @@
 #include "string-table.h"
 #include "string-util.h"
 #include "strv.h"
+#include "terminal-util.h"
 #include "umask-util.h"
 #include "user-util.h"
 #include "util.h"
@@ -162,11 +145,13 @@ typedef enum DirectoryType {
         _DIRECTORY_TYPE_MAX,
 } DirectoryType;
 
+static bool arg_cat_config = false;
 static bool arg_user = false;
 static bool arg_create = false;
 static bool arg_clean = false;
 static bool arg_remove = false;
 static bool arg_boot = false;
+static bool arg_no_pager = false;
 
 static char **arg_include_prefixes = NULL;
 static char **arg_exclude_prefixes = NULL;
@@ -190,10 +175,13 @@ static const Specifier specifier_table[] = {
         { 'U', specifier_user_id,         NULL },
         { 'u', specifier_user_name,       NULL },
         { 'h', specifier_user_home,       NULL },
+
         { 't', specifier_directory,       UINT_TO_PTR(DIRECTORY_RUNTIME) },
         { 'S', specifier_directory,       UINT_TO_PTR(DIRECTORY_STATE) },
         { 'C', specifier_directory,       UINT_TO_PTR(DIRECTORY_CACHE) },
         { 'L', specifier_directory,       UINT_TO_PTR(DIRECTORY_LOGS) },
+        { 'T', specifier_tmp_dir,         NULL },
+        { 'V', specifier_var_tmp_dir,     NULL },
         {}
 };
 
@@ -310,8 +298,7 @@ static int user_config_paths(char*** ret) {
         if (r < 0)
                 return r;
 
-        *ret = res;
-        res = NULL;
+        *ret = TAKE_PTR(res);
         return 0;
 }
 
@@ -440,7 +427,7 @@ static void load_unix_sockets(void) {
                         goto fail;
                 }
 
-                path_kill_slashes(s);
+                path_simplify(s, false);
 
                 r = set_consume(unix_sockets, s);
                 if (r < 0 && r != -EEXIST) {
@@ -822,15 +809,9 @@ static int fd_set_perms(Item *i, int fd, const struct stat *st) {
                         if (m == (st->st_mode & 07777))
                                 log_debug("\"%s\" has correct mode %o already.", path, st->st_mode);
                         else {
-                                char procfs_path[strlen("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
-
                                 log_debug("Changing \"%s\" to mode %o.", path, m);
-
-                                /* fchmodat() still doesn't have AT_EMPTY_PATH flag. */
-                                xsprintf(procfs_path, "/proc/self/fd/%i", fd);
-
-                                if (chmod(procfs_path, m) < 0)
-                                        return log_error_errno(errno, "chmod() of %s via %s failed: %m", path, procfs_path);
+                                if (fchmod_opath(fd, m) < 0)
+                                        return log_error_errno(errno, "fchmod() of %s failed: %m", path);
                         }
                 }
         }
@@ -851,7 +832,7 @@ static int fd_set_perms(Item *i, int fd, const struct stat *st) {
         }
 
 shortcut:
-        return label_fix(path, false, false);
+        return label_fix(path, 0);
 }
 
 static int path_set_perms(Item *i, const char *path) {
@@ -924,7 +905,7 @@ static int parse_xattrs_from_arg(Item *i) {
 }
 
 static int fd_set_xattrs(Item *i, int fd, const struct stat *st) {
-        char procfs_path[strlen("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
+        char procfs_path[STRLEN("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
         _cleanup_free_ char *path = NULL;
         char **name, **value;
         int r;
@@ -1028,7 +1009,7 @@ static int path_set_acl(const char *path, const char *pretty, acl_type_t type, a
 static int fd_set_acls(Item *item, int fd, const struct stat *st) {
         int r = 0;
 #if HAVE_ACL
-        char procfs_path[strlen("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
+        char procfs_path[STRLEN("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
         _cleanup_free_ char *path = NULL;
 
         assert(item);
@@ -1190,7 +1171,6 @@ static int parse_attribute_from_arg(Item *item) {
 }
 
 static int fd_set_attribute(Item *item, int fd, const struct stat *st) {
-        char procfs_path[strlen("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
         _cleanup_close_ int procfs_fd = -1;
         _cleanup_free_ char *path = NULL;
         unsigned f;
@@ -1217,9 +1197,7 @@ static int fd_set_attribute(Item *item, int fd, const struct stat *st) {
         if (!S_ISDIR(st->st_mode))
                 f &= ~FS_DIRSYNC_FL;
 
-        xsprintf(procfs_path, "/proc/self/fd/%i", fd);
-
-        procfs_fd = open(procfs_path, O_RDONLY|O_CLOEXEC|O_NOATIME);
+        procfs_fd = fd_reopen(fd, O_RDONLY|O_CLOEXEC|O_NOATIME);
         if (procfs_fd < 0)
                 return -errno;
 
@@ -1263,7 +1241,7 @@ static int write_one_file(Item *i, const char *path) {
 
         RUN_WITH_UMASK(0000) {
                 mac_selinux_create_file_prepare(path, S_IFREG);
-                fd = open(path, flags|O_NDELAY|O_CLOEXEC|O_WRONLY|O_NOCTTY, i->mode);
+                fd = open(path, flags|O_NONBLOCK|O_CLOEXEC|O_WRONLY|O_NOCTTY, i->mode);
                 mac_selinux_create_file_clear();
         }
 
@@ -1328,7 +1306,7 @@ static int item_do(Item *i, int fd, const struct stat *st, fdaction_t action) {
         r = action(i, fd, st);
 
         if (S_ISDIR(st->st_mode)) {
-                char procfs_path[strlen("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
+                char procfs_path[STRLEN("/proc/self/fd/") + DECIMAL_STR_MAX(int)];
                 _cleanup_closedir_ DIR *d = NULL;
                 struct dirent *de;
 
@@ -1471,8 +1449,7 @@ static int create_item(Item *i) {
                         return r;
                 break;
 
-        case COPY_FILES: {
-
+        case COPY_FILES:
                 RUN_WITH_UMASK(0000)
                         (void) mkdir_parents_label(i->path, 0755);
 
@@ -1526,7 +1503,7 @@ static int create_item(Item *i) {
 
                 if (IN_SET(i->type, CREATE_SUBVOLUME, CREATE_SUBVOLUME_INHERIT_QUOTA, CREATE_SUBVOLUME_NEW_QUOTA)) {
 
-                        if (btrfs_is_subvol(isempty(arg_root) ? "/" : arg_root) <= 0)
+                        if (btrfs_is_subvol(empty_to_root(arg_root)) <= 0)
 
                                 /* Don't create a subvolume unless the
                                  * root directory is one, too. We do
@@ -1645,7 +1622,6 @@ static int create_item(Item *i) {
                         return r;
 
                 break;
-        }
 
         case CREATE_SYMLINK: {
                 RUN_WITH_UMASK(0000)
@@ -2138,6 +2114,43 @@ static int specifier_expansion_from_arg(Item *i) {
         return 0;
 }
 
+static int patch_var_run(const char *fname, unsigned line, char **path) {
+        const char *k;
+        char *n;
+
+        assert(path);
+        assert(*path);
+
+        /* Optionally rewrites lines referencing /var/run/, to use /run/ instead. Why bother? tmpfiles merges lines in
+         * some cases and detects conflicts in others. If files/directories are specified through two equivalent lines
+         * this is problematic as neither case will be detected. Ideally we'd detect these cases by resolving symlinks
+         * early, but that's precisely not what we can do here as this code very likely is running very early on, at a
+         * time where the paths in question are not available yet, or even more importantly, our own tmpfiles rules
+         * might create the paths that are intermediary to the listed paths. We can't really cover the generic case,
+         * but the least we can do is cover the specific case of /var/run vs. /run, as /var/run is a legacy name for
+         * /run only, and we explicitly document that and require that on systemd systems the former is a symlink to
+         * the latter. Moreover files below this path are by far the primary usecase for tmpfiles.d/. */
+
+        k = path_startswith(*path, "/var/run/");
+        if (isempty(k)) /* Don't complain about other paths than /var/run, and not about /var/run itself either. */
+                return 0;
+
+        n = strjoin("/run/", k);
+        if (!n)
+                return log_oom();
+
+        /* Also log about this briefly. We do so at LOG_NOTICE level, as we fixed up the situation automatically, hence
+         * there's no immediate need for action by the user. However, in the interest of making things less confusing
+         * to the user, let's still inform the user that these snippets should really be updated. */
+
+        log_notice("[%s:%u] Line references path below legacy directory /var/run/, updating %s → %s; please update the tmpfiles.d/ drop-in file accordingly.", fname, line, *path, n);
+
+        free(*path);
+        *path = n;
+
+        return 0;
+}
+
 static int parse_line(const char *fname, unsigned line, const char *buffer, bool *invalid_config) {
 
         _cleanup_free_ char *action = NULL, *mode = NULL, *user = NULL, *group = NULL, *age = NULL, *path = NULL;
@@ -2167,9 +2180,7 @@ static int parse_line(const char *fname, unsigned line, const char *buffer, bool
                         /* invalid quoting and such or an unknown specifier */
                         *invalid_config = true;
                 return log_error_errno(r, "[%s:%u] Failed to parse line: %m", fname, line);
-        }
-
-        else if (r < 2) {
+        } else if (r < 2) {
                 *invalid_config = true;
                 log_error("[%s:%u] Syntax error.", fname, line);
                 return -EIO;
@@ -2217,6 +2228,10 @@ static int parse_line(const char *fname, unsigned line, const char *buffer, bool
                         *invalid_config = true;
                 return log_error_errno(r, "[%s:%u] Failed to replace specifiers: %s", fname, line, path);
         }
+
+        r = patch_var_run(fname, line, &i.path);
+        if (r < 0)
+                return r;
 
         switch (i.type) {
 
@@ -2270,7 +2285,7 @@ static int parse_line(const char *fname, unsigned line, const char *buffer, bool
                         return -EBADMSG;
                 }
 
-                path_kill_slashes(i.argument);
+                path_simplify(i.argument, false);
                 break;
 
         case CREATE_CHAR_DEVICE:
@@ -2343,7 +2358,7 @@ static int parse_line(const char *fname, unsigned line, const char *buffer, bool
                 return -EBADMSG;
         }
 
-        path_kill_slashes(i.path);
+        path_simplify(i.path, false);
 
         if (!should_include_path(i.path))
                 return 0;
@@ -2466,12 +2481,24 @@ static int parse_line(const char *fname, unsigned line, const char *buffer, bool
         return 0;
 }
 
+static int cat_config(char **config_dirs, char **args) {
+        _cleanup_strv_free_ char **files = NULL;
+        int r;
+
+        r = conf_files_list_with_replacement(arg_root, config_dirs, arg_replace, &files, NULL);
+        if (r < 0)
+                return r;
+
+        return cat_files(NULL, files, 0);
+}
+
 static void help(void) {
         printf("%s [OPTIONS...] [CONFIGURATION FILE...]\n\n"
                "Creates, deletes and cleans up volatile and temporary files and directories.\n\n"
                "  -h --help                 Show this help\n"
                "     --user                 Execute user configuration\n"
                "     --version              Show package version\n"
+               "     --cat-config           Show configuration files\n"
                "     --create               Create marked files/directories\n"
                "     --clean                Clean up marked directories\n"
                "     --remove               Remove marked files/directories\n"
@@ -2480,6 +2507,7 @@ static void help(void) {
                "     --exclude-prefix=PATH  Ignore rules with the specified prefix\n"
                "     --root=PATH            Operate on an alternate filesystem root\n"
                "     --replace=PATH         Treat arguments as replacement for PATH\n"
+               "     --no-pager             Do not pipe output into a pager\n"
                , program_invocation_short_name);
 }
 
@@ -2487,6 +2515,7 @@ static int parse_argv(int argc, char *argv[]) {
 
         enum {
                 ARG_VERSION = 0x100,
+                ARG_CAT_CONFIG,
                 ARG_USER,
                 ARG_CREATE,
                 ARG_CLEAN,
@@ -2496,12 +2525,14 @@ static int parse_argv(int argc, char *argv[]) {
                 ARG_EXCLUDE_PREFIX,
                 ARG_ROOT,
                 ARG_REPLACE,
+                ARG_NO_PAGER,
         };
 
         static const struct option options[] = {
                 { "help",           no_argument,         NULL, 'h'                },
                 { "user",           no_argument,         NULL, ARG_USER           },
                 { "version",        no_argument,         NULL, ARG_VERSION        },
+                { "cat-config",     no_argument,         NULL, ARG_CAT_CONFIG     },
                 { "create",         no_argument,         NULL, ARG_CREATE         },
                 { "clean",          no_argument,         NULL, ARG_CLEAN          },
                 { "remove",         no_argument,         NULL, ARG_REMOVE         },
@@ -2510,6 +2541,7 @@ static int parse_argv(int argc, char *argv[]) {
                 { "exclude-prefix", required_argument,   NULL, ARG_EXCLUDE_PREFIX },
                 { "root",           required_argument,   NULL, ARG_ROOT           },
                 { "replace",        required_argument,   NULL, ARG_REPLACE        },
+                { "no-pager",       no_argument,         NULL, ARG_NO_PAGER       },
                 {}
         };
 
@@ -2528,6 +2560,10 @@ static int parse_argv(int argc, char *argv[]) {
 
                 case ARG_VERSION:
                         return version();
+
+                case ARG_CAT_CONFIG:
+                        arg_cat_config = true;
+                        break;
 
                 case ARG_USER:
                         arg_user = true;
@@ -2575,6 +2611,10 @@ static int parse_argv(int argc, char *argv[]) {
                         arg_replace = optarg;
                         break;
 
+                case ARG_NO_PAGER:
+                        arg_no_pager = true;
+                        break;
+
                 case '?':
                         return -EINVAL;
 
@@ -2582,8 +2622,13 @@ static int parse_argv(int argc, char *argv[]) {
                         assert_not_reached("Unhandled option");
                 }
 
-        if (!arg_clean && !arg_create && !arg_remove) {
+        if (!arg_clean && !arg_create && !arg_remove && !arg_cat_config) {
                 log_error("You need to specify at least one of --clean, --create or --remove.");
+                return -EINVAL;
+        }
+
+        if (arg_replace && arg_cat_config) {
+                log_error("Option --replace= is not supported with --cat-config");
                 return -EINVAL;
         }
 
@@ -2702,19 +2747,9 @@ static int read_config_files(char **config_dirs, char **args, bool *invalid_conf
         char **f;
         int r;
 
-        r = conf_files_list_strv(&files, ".conf", arg_root, 0, (const char* const*) config_dirs);
+        r = conf_files_list_with_replacement(arg_root, config_dirs, arg_replace, &files, &p);
         if (r < 0)
-                return log_error_errno(r, "Failed to enumerate tmpfiles.d files: %m");
-
-        if (arg_replace) {
-                r = conf_files_insert(&files, arg_root, config_dirs, arg_replace);
-                if (r < 0)
-                        return log_error_errno(r, "Failed to extend tmpfiles.d file list: %m");
-
-                p = path_join(arg_root, arg_replace, NULL);
-                if (!p)
-                        return log_oom();
-        }
+                return r;
 
         STRV_FOREACH(f, files)
                 if (p && path_equal(*f, p)) {
@@ -2746,20 +2781,6 @@ int main(int argc, char *argv[]) {
         log_parse_environment();
         log_open();
 
-        umask(0022);
-
-        mac_selinux_init();
-
-        items = ordered_hashmap_new(&string_hash_ops);
-        globs = ordered_hashmap_new(&string_hash_ops);
-
-        if (!items || !globs) {
-                r = log_oom();
-                goto finish;
-        }
-
-        r = 0;
-
         if (arg_user) {
                 r = user_config_paths(&config_dirs);
                 if (r < 0) {
@@ -2780,6 +2801,25 @@ int main(int argc, char *argv[]) {
                 t = strv_join(config_dirs, "\n\t");
                 if (t)
                         log_debug("Looking for configuration files in (higher priority first):\n\t%s", t);
+        }
+
+        if (arg_cat_config) {
+                (void) pager_open(arg_no_pager, false);
+
+                r = cat_config(config_dirs, argv + optind);
+                goto finish;
+        }
+
+        umask(0022);
+
+        mac_selinux_init();
+
+        items = ordered_hashmap_new(&string_hash_ops);
+        globs = ordered_hashmap_new(&string_hash_ops);
+
+        if (!items || !globs) {
+                r = log_oom();
+                goto finish;
         }
 
         /* If command line arguments are specified along with --replace, read all
@@ -2812,6 +2852,8 @@ int main(int argc, char *argv[]) {
         }
 
 finish:
+        pager_close();
+
         ordered_hashmap_free_with_destructor(items, item_array_free);
         ordered_hashmap_free_with_destructor(globs, item_array_free);
 

@@ -1,26 +1,9 @@
 /* SPDX-License-Identifier: LGPL-2.1+ */
-/***
-  This file is part of systemd.
-
-  Copyright 2015 Ronny Chevalier
-
-  systemd is free software; you can redistribute it and/or modify it
-  under the terms of the GNU Lesser General Public License as published by
-  the Free Software Foundation; either version 2.1 of the License, or
-  (at your option) any later version.
-
-  systemd is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public License
-  along with systemd; If not, see <http://www.gnu.org/licenses/>.
-***/
 
 #include "conf-parser.h"
 #include "fd-util.h"
 #include "fileio.h"
+#include "fs-util.h"
 #include "log.h"
 #include "macro.h"
 #include "string-util.h"
@@ -108,6 +91,7 @@ static void test_config_parse_path(void) {
         test_config_parse_path_one("/path", "/path");
         test_config_parse_path_one("/path//////////", "/path");
         test_config_parse_path_one("///path/foo///bar////bar//", "/path/foo/bar/bar");
+        test_config_parse_path_one("/path//./////hogehoge///.", "/path/hogehoge");
         test_config_parse_path_one("/path/\xc3\x80", "/path/\xc3\x80");
 
         test_config_parse_path_one("not_absolute/path", NULL);
@@ -182,7 +166,7 @@ static void test_config_parse_strv(void) {
         test_config_parse_strv_one("foo bar foo", STRV_MAKE("foo", "bar", "foo"));
         test_config_parse_strv_one("\"foo bar\" foo", STRV_MAKE("foo bar", "foo"));
         test_config_parse_strv_one("\xc3\x80", STRV_MAKE("\xc3\x80"));
-        test_config_parse_strv_one("\xc3\x7f", STRV_MAKE_EMPTY);
+        test_config_parse_strv_one("\xc3\x7f", STRV_MAKE("\xc3\x7f"));
 }
 
 static void test_config_parse_mode(void) {
@@ -326,7 +310,7 @@ static const char* const config_file[] = {
 };
 
 static void test_config_parse(unsigned i, const char *s) {
-        char name[] = "/tmp/test-conf-parser.XXXXXX";
+        _cleanup_(unlink_tempfilep) char name[] = "/tmp/test-conf-parser.XXXXXX";
         int fd, r;
         _cleanup_fclose_ FILE *f = NULL;
         _cleanup_free_ char *setting1 = NULL;

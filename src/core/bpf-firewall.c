@@ -1,22 +1,4 @@
 /* SPDX-License-Identifier: LGPL-2.1+ */
-/***
-  This file is part of systemd.
-
-  Copyright 2016 Daniel Mack
-
-  systemd is free software; you can redistribute it and/or modify it
-  under the terms of the GNU Lesser General Public License as published by
-  the Free Software Foundation; either version 2.1 of the License, or
-  (at your option) any later version.
-
-  systemd is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public License
-  along with systemd; If not, see <http://www.gnu.org/licenses/>.
-***/
 
 #include <arpa/inet.h>
 #include <assert.h>
@@ -311,8 +293,7 @@ static int bpf_firewall_compile_bpf(
                         return r;
         } while (false);
 
-        *ret = p;
-        p = NULL;
+        *ret = TAKE_PTR(p);
 
         return 0;
 }
@@ -743,8 +724,7 @@ int bpf_firewall_supported(void) {
                 .attach_bpf_fd = -1,
         };
 
-        r = bpf(BPF_PROG_ATTACH, &attr, sizeof(attr));
-        if (r < 0) {
+        if (bpf(BPF_PROG_ATTACH, &attr, sizeof(attr)) < 0) {
                 if (errno != EBADF) {
                         log_debug_errno(errno, "Didn't get EBADF from BPF_PROG_ATTACH, BPF firewalling is not supported: %m");
                         return supported = BPF_FIREWALL_UNSUPPORTED;
@@ -768,8 +748,7 @@ int bpf_firewall_supported(void) {
                 .attach_flags = BPF_F_ALLOW_MULTI,
         };
 
-        r = bpf(BPF_PROG_ATTACH, &attr, sizeof(attr));
-        if (r < 0) {
+        if (bpf(BPF_PROG_ATTACH, &attr, sizeof(attr)) < 0) {
                 if (errno == EBADF) {
                         log_debug_errno(errno, "Got EBADF when using BPF_F_ALLOW_MULTI, which indicates it is supported. Yay!");
                         return supported = BPF_FIREWALL_SUPPORTED_WITH_MULTI;
