@@ -1083,7 +1083,7 @@
       <title>Download a
       <ulink url="https://getfedora.org">Fedora</ulink> image and start a shell in it</title>
 
-      <programlisting># machinectl pull-raw -&2Dverify=no \
+      <programlisting># machinectl pull-raw -&2D;verify=no \
       https://download.fedoraproject.org/pub/fedora/linux/releases/25/CloudImages/x86_64/images/Fedora-Cloud-Base-25-1.3.x86_64.raw.xz
 # systemd-nspawn -M Fedora-Cloud-Base-25-1.3.x86_64.raw</programlisting>
 
