@@ -226,13 +226,10 @@ static void test_lz4_decompress_partial(void) {
         assert_se(r >= 0);
         log_info("Decompressed partial %i/%i → %i", 12, HUGE_SIZE, r);
 
-        /* We expect this to fail, because that's how current lz4 works. If this
-         * call succeeds, then lz4 has been fixed, and we need to change our code.
-         */
         r = LZ4_decompress_safe_partial(buf, huge,
                                         compressed,
                                         12, HUGE_SIZE-1);
-        assert_se(r < 0);
+        assert_se(r >= 0);
         log_info("Decompressed partial %i/%i → %i", 12, HUGE_SIZE-1, r);
 }
 #endif
