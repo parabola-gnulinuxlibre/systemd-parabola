@@ -1,3 +1,4 @@
 # This is the fallback vconsole configuration provided by systemd.
 
 #KEYMAP={{ SYSTEMD_DEFAULT_KEYMAP }}
+FONT=sun12x22
